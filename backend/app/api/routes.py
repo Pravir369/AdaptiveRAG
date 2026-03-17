@@ -16,11 +16,53 @@ from app.rag.embeddings import get_embedding_provider
 from app.rag.retriever import retrieve_and_rerank
 from app.rag.generator import build_answer_with_citations
 from app.trace import save_trace, get_trace
-from app.core import EMBEDDING_PROVIDER, DEFAULT_TOP_K, GENERATION_PROVIDER
+from app.core import EMBEDDING_PROVIDER, DEFAULT_TOP_K, GENERATION_PROVIDER, OLLAMA_MODEL
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+_CONVERSATIONAL_PATTERNS = [
+    "hello", "hi", "hey", "howdy", "greetings", "good morning", "good afternoon",
+    "good evening", "what's up", "whats up", "sup", "yo",
+    "thanks", "thank you", "thx", "bye", "goodbye", "see you",
+    "how are you", "how's it going", "what can you do", "who are you",
+    "help", "what is this", "nice", "cool", "okay", "ok", "great",
+]
+
+
+def _is_conversational_query(query: str) -> bool:
+    """Detect simple greetings/small talk that don't need document retrieval."""
+    q = query.strip().lower().rstrip("?!.,")
+    if len(q.split()) <= 4:
+        for pattern in _CONVERSATIONAL_PATTERNS:
+            if q == pattern or q.startswith(pattern + " ") or q.endswith(" " + pattern):
+                return True
+    return False
+
+
+def _handle_conversational(query: str, conversation_history: list) -> str:
+    """Send a conversational query to Ollama without any document context."""
+    from app.rag.generator.ollama import call_ollama
+
+    history_block = ""
+    if conversation_history:
+        history_block = "Previous conversation:\n"
+        for msg in conversation_history[-8:]:
+            role_label = "User" if msg["role"] == "user" else "Assistant"
+            history_block += f"{role_label}: {msg['content'][:400]}\n"
+        history_block += "\n"
+
+    prompt = (
+        "You are AdaptiveRAG, a friendly AI assistant that helps users explore their documents. "
+        "You can answer questions about documents the user has ingested into the system.\n"
+        "Be warm, conversational, and helpful. Keep responses concise (1-3 sentences).\n"
+        "If the user greets you, greet them back and let them know they can ask questions about their documents.\n\n"
+        f"{history_block}"
+        f"User: {query}\n\n"
+        "Assistant:"
+    )
+    return call_ollama(prompt)
 
 
 @router.get("/health")
@@ -92,6 +134,41 @@ def chat(
     generator_provider = GENERATION_PROVIDER
     generator_metadata = None
     generator_error = None
+
+    is_conversational = _is_conversational_query(req.query)
+
+    if is_conversational and GENERATION_PROVIDER == "ollama":
+        try:
+            from app.rag.generator.ollama import call_ollama
+            answer = _handle_conversational(req.query, conversation_history)
+            citations = []
+            generator_provider = "ollama"
+            generator_metadata = {"model": OLLAMA_MODEL, "mode": "conversational"}
+            latency_ms = int((time.perf_counter() - start) * 1000)
+            trace_id = save_trace(
+                db, query=req.query, embedding_provider=provider_name, top_k=0,
+                retrieved=[], reranked=[], selected=[], citations=[],
+                answer=answer, latency_ms=latency_ms,
+                attempts=[], heals_applied=[], final_selected=[],
+                self_heal_triggered=False, trigger_failed_thresholds=[],
+                best_attempt_no=1, generator_provider=generator_provider,
+                generator_metadata=generator_metadata, generator_error=None,
+            )
+
+            user_msg = MsgModel(conversation_id=conversation_id, role="user", content=req.query)
+            assistant_msg = MsgModel(conversation_id=conversation_id, role="assistant", content=answer, trace_id=trace_id, generator_provider=generator_provider)
+            db.add(user_msg)
+            db.add(assistant_msg)
+            conv.updated_at = datetime.utcnow()
+            db.commit()
+
+            return ChatResponse(
+                answer=answer, citations=[], trace_id=trace_id,
+                generator_provider=generator_provider, conversation_id=conversation_id,
+            )
+        except Exception as e:
+            logger.warning("Conversational Ollama failed (%s), falling through to RAG", e)
+
     try:
         reranked, selected, chunk_texts, attempts, heals_applied, self_heal_triggered, trigger_failed_thresholds, best_attempt_no, mode = retrieve_and_rerank(
             req.query, top_k, provider_name

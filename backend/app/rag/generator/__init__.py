@@ -11,17 +11,21 @@ from .ollama import OllamaGenerator
 
 logger = logging.getLogger(__name__)
 
-_INLINE_CITE_NOISE = re.compile(r"\(chunk_id[=:]?\s*([0-9a-f-]+)\)", re.IGNORECASE)
-_BRACKET_CITE_NOISE = re.compile(r"\[chunk_id=([0-9a-f-]+)\]")
-_CHUNK_ID_COLON = re.compile(r"chunk_id:\s*([0-9a-f-]+)")
+_UUID_INLINE = re.compile(r"\(?[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\)?", re.IGNORECASE)
+_BRACKET_CITE = re.compile(r"\[chunk_id=[^\]]+\]")
+_SHORT_ID_BRACKET = re.compile(r"\[([0-9a-f]{8})\]")
 
 
 def _clean_answer_text(text: str) -> str:
-    """Clean up verbose citation noise in model output for user-facing display."""
-    text = _INLINE_CITE_NOISE.sub(r"(\1)", text)
-    text = _BRACKET_CITE_NOISE.sub(r"(\1)", text)
-    text = _CHUNK_ID_COLON.sub(r"(\1)", text)
-    text = re.sub(r"\(([0-9a-f-]{36})\)(\s*\(\1\))+", r"(\1)", text)
+    """Remove raw UUID citations from user-facing text since citations are shown separately in the UI."""
+    text = _UUID_INLINE.sub("", text)
+    text = _BRACKET_CITE.sub("", text)
+    text = _SHORT_ID_BRACKET.sub("", text)
+    text = re.sub(r"chunk_id[=:\s]+[0-9a-f-]+", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\(\s*\)", "", text)
+    text = re.sub(r"\[\s*\]", "", text)
+    text = re.sub(r"  +", " ", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
 
 
