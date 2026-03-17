@@ -1,0 +1,10 @@
+{"query": "What is the main topic of the document?", "expected_doc_ids": [], "id": "q1"}
+{"query": "Summarize the key points.", "expected_doc_ids": [], "id": "q2"}
+{"query": "When was this written?", "expected_doc_ids": [], "id": "q3"}
+{"query": "Who is the author?", "expected_doc_ids": [], "id": "q4"}
+{"query": "What are the conclusions?", "expected_doc_ids": [], "id": "q5"}
+{"query": "List the main sections.", "expected_doc_ids": [], "id": "q6"}
+{"query": "What methodology was used?", "expected_doc_ids": [], "id": "q7"}
+{"query": "What is the recommended approach?", "expected_doc_ids": [], "id": "q8"}
+{"query": "Define the key terms.", "expected_doc_ids": [], "id": "q9"}
+{"query": "What are the limitations?", "expected_doc_ids": [], "id": "q10"}

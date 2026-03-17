@@ -1,0 +1,21 @@
+# AdaptiveRAG v0 – runnable with no paid API keys
+# Python 3.11+
+
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+pydantic>=2.0.0
+sqlalchemy>=2.0.0
+numpy>=1.24.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# URL ingestion: optional readability; fallback is BeautifulSoup
+beautifulsoup4>=4.12.0
+readability-lxml>=0.8.1
+
+# Optional: sentence-transformers (set EMBEDDING_PROVIDER=sbert)
+# sentence-transformers>=2.2.0
+
+# Optional: PDF (install to enable .pdf upload)
+# pypdf>=3.0.0
