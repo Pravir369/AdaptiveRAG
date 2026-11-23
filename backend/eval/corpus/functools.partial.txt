@@ -1,0 +1,4 @@
+functools.partial(func, /, *args, **keywords)
+
+Create a new function with partial application of the given arguments
+and keywords.

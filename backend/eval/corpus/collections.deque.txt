@@ -1,0 +1,3 @@
+collections.deque(...)
+
+A list-like sequence optimized for data accesses near its endpoints.

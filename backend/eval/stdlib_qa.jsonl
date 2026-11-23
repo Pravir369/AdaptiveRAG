@@ -1,0 +1,45 @@
+{"id": "s01", "query": "How do I turn a Python dict into a JSON string with pretty-printed indentation?", "expected_doc_titles": ["json.dumps"], "expected_answer_contains": "pretty-printed", "style": "paraphrase"}
+{"id": "s02", "query": "What does sort_keys do when serializing to JSON?", "expected_doc_titles": ["json.dumps"], "expected_answer_contains": "sorted by key", "style": "keyword"}
+{"id": "s03", "query": "How can I parse JSON numbers with decimals as Decimal instead of float?", "expected_doc_titles": ["json.loads"], "expected_answer_contains": "parse_float", "style": "paraphrase"}
+{"id": "s04", "query": "What is object_pairs_hook used for in json.loads?", "expected_doc_titles": ["json.loads"], "expected_answer_contains": "ordered list of pairs", "style": "keyword"}
+{"id": "s05", "query": "How do I get a writer object to write rows to a CSV file?", "expected_doc_titles": ["csv.writer"], "expected_answer_contains": "writer object", "style": "keyword"}
+{"id": "s06", "query": "With pathlib, how do I list every file under a folder that matches a wildcard pattern?", "expected_doc_titles": ["pathlib.Path.glob"], "expected_answer_contains": "matching the given relative pattern", "style": "paraphrase"}
+{"id": "s07", "query": "How do I create a folder along with any missing parent folders?", "expected_doc_titles": ["os.makedirs"], "expected_answer_contains": "intermediate", "style": "paraphrase"}
+{"id": "s08", "query": "What does makedirs raise if the directory already exists and exist_ok is False?", "expected_doc_titles": ["os.makedirs"], "expected_answer_contains": "OSError", "style": "keyword"}
+{"id": "s09", "query": "How can I duplicate an entire folder including all of its subfolders?", "expected_doc_titles": ["shutil.copytree"], "expected_answer_contains": "Recursively copy a directory tree", "style": "paraphrase"}
+{"id": "s10", "query": "How do I skip some files when calling copytree with an ignore callable?", "expected_doc_titles": ["shutil.copytree"], "expected_answer_contains": "ignored_names", "style": "keyword"}
+{"id": "s11", "query": "How do I delete a directory and everything inside it?", "expected_doc_titles": ["shutil.rmtree"], "expected_answer_contains": "Recursively delete", "style": "paraphrase"}
+{"id": "s12", "query": "How do I find where an executable command lives on the PATH?", "expected_doc_titles": ["shutil.which"], "expected_answer_contains": "PATH", "style": "paraphrase"}
+{"id": "s13", "query": "How do I run an external program and capture what it prints?", "expected_doc_titles": ["subprocess.run"], "expected_answer_contains": "capture_output=True", "style": "paraphrase"}
+{"id": "s14", "query": "What exception is raised when check is True and the exit code is non-zero?", "expected_doc_titles": ["subprocess.run"], "expected_answer_contains": "CalledProcessError", "style": "keyword"}
+{"id": "s15", "query": "What happens if a child process takes longer than the timeout?", "expected_doc_titles": ["subprocess.run"], "expected_answer_contains": "TimeoutExpired", "style": "paraphrase"}
+{"id": "s16", "query": "How do I get the n biggest items from a dataset?", "expected_doc_titles": ["heapq.nlargest"], "expected_answer_contains": "n largest", "style": "paraphrase"}
+{"id": "s17", "query": "How do I insert an item into an already sorted list so it stays sorted?", "expected_doc_titles": ["bisect.insort"], "expected_answer_contains": "keep it sorted", "style": "paraphrase"}
+{"id": "s18", "query": "How do I group consecutive elements of an iterable by a key function?", "expected_doc_titles": ["itertools.groupby"], "expected_answer_contains": "consecutive keys and groups", "style": "keyword"}
+{"id": "s19", "query": "How do I loop over several lists one after another as if they were a single sequence?", "expected_doc_titles": ["itertools.chain"], "expected_answer_contains": "until all of the iterables are exhausted", "style": "paraphrase"}
+{"id": "s20", "query": "How can I memoize a function so repeated calls with the same arguments are cached?", "expected_doc_titles": ["functools.lru_cache"], "expected_answer_contains": "Least-recently-used cache", "style": "paraphrase"}
+{"id": "s21", "query": "How do I view cache hits and misses for an lru_cache decorated function?", "expected_doc_titles": ["functools.lru_cache"], "expected_answer_contains": "cache_info()", "style": "keyword"}
+{"id": "s22", "query": "How do I make a new function with some of the arguments already filled in?", "expected_doc_titles": ["functools.partial"], "expected_answer_contains": "partial application", "style": "paraphrase"}
+{"id": "s23", "query": "How do I count how many times each item appears in a list?", "expected_doc_titles": ["collections.Counter"], "expected_answer_contains": "counting hashable items", "style": "paraphrase"}
+{"id": "s24", "query": "How do I get the three most common elements from a Counter?", "expected_doc_titles": ["collections.Counter"], "expected_answer_contains": "most_common(3)", "style": "keyword"}
+{"id": "s25", "query": "How do I make a dictionary that creates a default value for a missing key?", "expected_doc_titles": ["collections.defaultdict"], "expected_answer_contains": "default factory", "style": "paraphrase"}
+{"id": "s26", "query": "Which list-like sequence is optimized for fast access at both of its endpoints?", "expected_doc_titles": ["collections.deque"], "expected_answer_contains": "near its endpoints", "style": "paraphrase"}
+{"id": "s27", "query": "How do I represent the difference between two datetime values?", "expected_doc_titles": ["datetime.timedelta"], "expected_answer_contains": "Difference between two datetime values", "style": "paraphrase"}
+{"id": "s28", "query": "How do I replace occurrences of a regex pattern in a string with a replacement?", "expected_doc_titles": ["re.sub"], "expected_answer_contains": "replacement repl", "style": "paraphrase"}
+{"id": "s29", "query": "How do I get a list of all non-overlapping regex matches in a string?", "expected_doc_titles": ["re.findall"], "expected_answer_contains": "non-overlapping matches", "style": "keyword"}
+{"id": "s30", "query": "What mode do I use to open a zip file for appending?", "expected_doc_titles": ["zipfile.ZipFile"], "expected_answer_contains": "append 'a'", "style": "keyword"}
+{"id": "s31", "query": "Which zip compression method requires zlib?", "expected_doc_titles": ["zipfile.ZipFile"], "expected_answer_contains": "ZIP_DEFLATED", "style": "keyword"}
+{"id": "s32", "query": "How do I pick k unique random elements from a population without repeats?", "expected_doc_titles": ["random.sample"], "expected_answer_contains": "k unique random elements", "style": "paraphrase"}
+{"id": "s33", "query": "How is the middle value computed when there is an even number of data points?", "expected_doc_titles": ["statistics.median"], "expected_answer_contains": "average of the two middle values", "style": "paraphrase"}
+{"id": "s34", "query": "How do I break a long paragraph into lines no wider than a given width?", "expected_doc_titles": ["textwrap.wrap"], "expected_answer_contains": "wrapped lines", "style": "paraphrase"}
+{"id": "s35", "query": "How do I split a URL into its scheme, netloc, path and query parts?", "expected_doc_titles": ["urllib.parse.urlparse"], "expected_answer_contains": "6 components", "style": "paraphrase"}
+{"id": "s36", "query": "How do I generate url or filesystem safe Base64 strings?", "expected_doc_titles": ["base64.b64encode"], "expected_answer_contains": "altchars", "style": "paraphrase"}
+{"id": "s37", "query": "How do I create a temporary file that is deleted automatically when it is closed?", "expected_doc_titles": ["tempfile.NamedTemporaryFile"], "expected_answer_contains": "automatically deleted", "style": "paraphrase"}
+{"id": "s38", "query": "How do I make the ** pattern match files in subdirectories recursively with glob?", "expected_doc_titles": ["glob.glob"], "expected_answer_contains": "recursive", "style": "keyword"}
+{"id": "s39", "query": "In a simple script, how do I send log output to a file instead of stderr?", "expected_doc_titles": ["logging.basicConfig"], "expected_answer_contains": "FileHandler", "style": "paraphrase"}
+{"id": "s40", "query": "How do I open a SQLite database connection that lives in RAM instead of on disk?", "expected_doc_titles": ["sqlite3.connect"], "expected_answer_contains": ":memory:", "style": "keyword"}
+{"id": "s41", "query": "How do I check whether two floating-point numbers are approximately equal?", "expected_doc_titles": ["math.isclose"], "expected_answer_contains": "close in value", "style": "paraphrase"}
+{"id": "s42", "query": "How do I generate a random text string in hexadecimal for a security token?", "expected_doc_titles": ["secrets.token_hex"], "expected_answer_contains": "hexadecimal", "style": "paraphrase"}
+{"id": "v1", "query": "Explain this", "expected_doc_titles": [], "style": "vague"}
+{"id": "v2", "query": "What are the key points?", "expected_doc_titles": [], "style": "vague"}
+{"id": "v3", "query": "Summarize everything", "expected_doc_titles": [], "style": "vague"}
