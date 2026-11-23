@@ -1,0 +1,970 @@
+{
+  "embedding_provider": "hash",
+  "generator": "extractive",
+  "python": "3.13.18",
+  "corpus": {
+    "path": "eval/corpus",
+    "documents": 33,
+    "chunks": 40
+  },
+  "questions": {
+    "scored": 42,
+    "paraphrase": 28,
+    "keyword": 14,
+    "vague_unscored": 3
+  },
+  "top_k": 12,
+  "configs": {
+    "bm25": {
+      "all": {
+        "n": 42,
+        "hit_at_1": 0.762,
+        "hit_at_5": 0.952,
+        "mrr_at_10": 0.844,
+        "latency_ms_p50": 0.9,
+        "latency_ms_p95": 1.0
+      },
+      "paraphrase": {
+        "n": 28,
+        "hit_at_1": 0.679,
+        "hit_at_5": 0.929,
+        "mrr_at_10": 0.783,
+        "latency_ms_p50": 0.9,
+        "latency_ms_p95": 1.0
+      },
+      "keyword": {
+        "n": 14,
+        "hit_at_1": 0.929,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 0.964,
+        "latency_ms_p50": 0.9,
+        "latency_ms_p95": 1.0
+      }
+    },
+    "vector": {
+      "all": {
+        "n": 42,
+        "hit_at_1": 0.524,
+        "hit_at_5": 0.881,
+        "mrr_at_10": 0.662,
+        "latency_ms_p50": 4.8,
+        "latency_ms_p95": 5.8
+      },
+      "paraphrase": {
+        "n": 28,
+        "hit_at_1": 0.5,
+        "hit_at_5": 0.821,
+        "mrr_at_10": 0.619,
+        "latency_ms_p50": 4.8,
+        "latency_ms_p95": 6.2
+      },
+      "keyword": {
+        "n": 14,
+        "hit_at_1": 0.571,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 0.746,
+        "latency_ms_p50": 4.6,
+        "latency_ms_p95": 5.5
+      }
+    },
+    "hybrid": {
+      "all": {
+        "n": 42,
+        "hit_at_1": 0.762,
+        "hit_at_5": 0.905,
+        "mrr_at_10": 0.831,
+        "latency_ms_p50": 4.4,
+        "latency_ms_p95": 5.4
+      },
+      "paraphrase": {
+        "n": 28,
+        "hit_at_1": 0.714,
+        "hit_at_5": 0.857,
+        "mrr_at_10": 0.782,
+        "latency_ms_p50": 4.6,
+        "latency_ms_p95": 5.5
+      },
+      "keyword": {
+        "n": 14,
+        "hit_at_1": 0.857,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 0.929,
+        "latency_ms_p50": 4.2,
+        "latency_ms_p95": 4.6
+      }
+    },
+    "adaptive": {
+      "all": {
+        "n": 42,
+        "hit_at_1": 0.762,
+        "hit_at_5": 0.905,
+        "mrr_at_10": 0.831,
+        "latency_ms_p50": 3.8,
+        "latency_ms_p95": 4.5
+      },
+      "paraphrase": {
+        "n": 28,
+        "hit_at_1": 0.714,
+        "hit_at_5": 0.857,
+        "mrr_at_10": 0.782,
+        "latency_ms_p50": 3.9,
+        "latency_ms_p95": 4.6
+      },
+      "keyword": {
+        "n": 14,
+        "hit_at_1": 0.857,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 0.929,
+        "latency_ms_p50": 3.8,
+        "latency_ms_p95": 4.2
+      }
+    }
+  },
+  "adaptive_extras": {
+    "answer_match_rate": 0.524,
+    "self_heal_triggered_on_scored": 0,
+    "self_heal_triggered_on_vague": "2/3"
+  },
+  "per_item": [
+    {
+      "id": "s01",
+      "style": "paraphrase",
+      "query": "How do I turn a Python dict into a JSON string with pretty-printed indentation?",
+      "expected": [
+        "json.dumps"
+      ],
+      "top_docs": [
+        "json.dumps",
+        "collections.defaultdict",
+        "re.sub",
+        "json.loads",
+        "bisect.insort"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s02",
+      "style": "keyword",
+      "query": "What does sort_keys do when serializing to JSON?",
+      "expected": [
+        "json.dumps"
+      ],
+      "top_docs": [
+        "json.loads",
+        "json.dumps",
+        "logging.basicConfig",
+        "collections.defaultdict",
+        "sqlite3.connect"
+      ],
+      "rank": 2,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s03",
+      "style": "paraphrase",
+      "query": "How can I parse JSON numbers with decimals as Decimal instead of float?",
+      "expected": [
+        "json.loads"
+      ],
+      "top_docs": [
+        "json.loads",
+        "json.dumps",
+        "urllib.parse.urlparse",
+        "functools.lru_cache",
+        "shutil.which"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s04",
+      "style": "keyword",
+      "query": "What is object_pairs_hook used for in json.loads?",
+      "expected": [
+        "json.loads"
+      ],
+      "top_docs": [
+        "json.loads",
+        "collections.Counter",
+        "json.dumps",
+        "shutil.rmtree",
+        "itertools.groupby"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s05",
+      "style": "keyword",
+      "query": "How do I get a writer object to write rows to a CSV file?",
+      "expected": [
+        "csv.writer"
+      ],
+      "top_docs": [
+        "csv.writer",
+        "bisect.insort",
+        "collections.defaultdict",
+        "shutil.which",
+        "logging.basicConfig"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s06",
+      "style": "paraphrase",
+      "query": "With pathlib, how do I list every file under a folder that matches a wildcard pattern?",
+      "expected": [
+        "pathlib.Path.glob"
+      ],
+      "top_docs": [
+        "re.findall",
+        "glob.glob",
+        "bisect.insort",
+        "collections.defaultdict",
+        "logging.basicConfig"
+      ],
+      "rank": null,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s07",
+      "style": "paraphrase",
+      "query": "How do I create a folder along with any missing parent folders?",
+      "expected": [
+        "os.makedirs"
+      ],
+      "top_docs": [
+        "functools.partial",
+        "glob.glob",
+        "logging.basicConfig",
+        "collections.defaultdict",
+        "shutil.which"
+      ],
+      "rank": null,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s08",
+      "style": "keyword",
+      "query": "What does makedirs raise if the directory already exists and exist_ok is False?",
+      "expected": [
+        "os.makedirs"
+      ],
+      "top_docs": [
+        "os.makedirs",
+        "shutil.copytree",
+        "shutil.rmtree",
+        "json.dumps",
+        "glob.glob"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s09",
+      "style": "paraphrase",
+      "query": "How can I duplicate an entire folder including all of its subfolders?",
+      "expected": [
+        "shutil.copytree"
+      ],
+      "top_docs": [
+        "pathlib.Path.glob",
+        "textwrap.wrap",
+        "json.loads",
+        "collections.deque",
+        "re.findall"
+      ],
+      "rank": 7,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s10",
+      "style": "keyword",
+      "query": "How do I skip some files when calling copytree with an ignore callable?",
+      "expected": [
+        "shutil.copytree"
+      ],
+      "top_docs": [
+        "shutil.copytree",
+        "functools.lru_cache",
+        "zipfile.ZipFile",
+        "json.loads",
+        "glob.glob"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s11",
+      "style": "paraphrase",
+      "query": "How do I delete a directory and everything inside it?",
+      "expected": [
+        "shutil.rmtree"
+      ],
+      "top_docs": [
+        "glob.glob",
+        "shutil.rmtree",
+        "bisect.insort",
+        "subprocess.run",
+        "tempfile.NamedTemporaryFile"
+      ],
+      "rank": 2,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s12",
+      "style": "paraphrase",
+      "query": "How do I find where an executable command lives on the PATH?",
+      "expected": [
+        "shutil.which"
+      ],
+      "top_docs": [
+        "shutil.which",
+        "shutil.rmtree",
+        "shutil.copytree",
+        "urllib.parse.urlparse",
+        "logging.basicConfig"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s13",
+      "style": "paraphrase",
+      "query": "How do I run an external program and capture what it prints?",
+      "expected": [
+        "subprocess.run"
+      ],
+      "top_docs": [
+        "subprocess.run",
+        "glob.glob",
+        "base64.b64encode",
+        "re.sub",
+        "functools.partial"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s14",
+      "style": "keyword",
+      "query": "What exception is raised when check is True and the exit code is non-zero?",
+      "expected": [
+        "subprocess.run"
+      ],
+      "top_docs": [
+        "subprocess.run",
+        "shutil.rmtree",
+        "collections.Counter",
+        "shutil.copytree",
+        "urllib.parse.urlparse"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s15",
+      "style": "paraphrase",
+      "query": "What happens if a child process takes longer than the timeout?",
+      "expected": [
+        "subprocess.run"
+      ],
+      "top_docs": [
+        "subprocess.run",
+        "shutil.copytree",
+        "logging.basicConfig",
+        "glob.glob",
+        "re.findall"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s16",
+      "style": "paraphrase",
+      "query": "How do I get the n biggest items from a dataset?",
+      "expected": [
+        "heapq.nlargest"
+      ],
+      "top_docs": [
+        "heapq.nlargest",
+        "random.sample",
+        "logging.basicConfig",
+        "shutil.copytree",
+        "itertools.chain"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s17",
+      "style": "paraphrase",
+      "query": "How do I insert an item into an already sorted list so it stays sorted?",
+      "expected": [
+        "bisect.insort"
+      ],
+      "top_docs": [
+        "bisect.insort",
+        "heapq.nlargest",
+        "collections.Counter",
+        "textwrap.wrap",
+        "random.sample"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s18",
+      "style": "keyword",
+      "query": "How do I group consecutive elements of an iterable by a key function?",
+      "expected": [
+        "itertools.groupby"
+      ],
+      "top_docs": [
+        "itertools.groupby",
+        "heapq.nlargest",
+        "itertools.chain",
+        "json.dumps",
+        "bisect.insort"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s19",
+      "style": "paraphrase",
+      "query": "How do I loop over several lists one after another as if they were a single sequence?",
+      "expected": [
+        "itertools.chain"
+      ],
+      "top_docs": [
+        "collections.defaultdict",
+        "json.loads",
+        "glob.glob",
+        "json.dumps",
+        "shutil.copytree"
+      ],
+      "rank": null,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s20",
+      "style": "paraphrase",
+      "query": "How can I memoize a function so repeated calls with the same arguments are cached?",
+      "expected": [
+        "functools.lru_cache"
+      ],
+      "top_docs": [
+        "functools.lru_cache",
+        "collections.defaultdict",
+        "bisect.insort",
+        "random.sample",
+        "functools.partial"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s21",
+      "style": "keyword",
+      "query": "How do I view cache hits and misses for an lru_cache decorated function?",
+      "expected": [
+        "functools.lru_cache"
+      ],
+      "top_docs": [
+        "functools.lru_cache",
+        "itertools.groupby",
+        "subprocess.run",
+        "functools.partial",
+        "logging.basicConfig"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s22",
+      "style": "paraphrase",
+      "query": "How do I make a new function with some of the arguments already filled in?",
+      "expected": [
+        "functools.partial"
+      ],
+      "top_docs": [
+        "functools.partial",
+        "logging.basicConfig",
+        "collections.defaultdict",
+        "bisect.insort",
+        "shutil.copytree"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s23",
+      "style": "paraphrase",
+      "query": "How do I count how many times each item appears in a list?",
+      "expected": [
+        "collections.Counter"
+      ],
+      "top_docs": [
+        "bisect.insort",
+        "collections.Counter",
+        "re.findall",
+        "shutil.copytree",
+        "heapq.nlargest"
+      ],
+      "rank": 2,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s24",
+      "style": "keyword",
+      "query": "How do I get the three most common elements from a Counter?",
+      "expected": [
+        "collections.Counter"
+      ],
+      "top_docs": [
+        "collections.Counter",
+        "random.sample",
+        "logging.basicConfig",
+        "itertools.chain",
+        "json.dumps"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s25",
+      "style": "paraphrase",
+      "query": "How do I make a dictionary that creates a default value for a missing key?",
+      "expected": [
+        "collections.defaultdict"
+      ],
+      "top_docs": [
+        "bisect.insort",
+        "collections.Counter",
+        "itertools.groupby",
+        "collections.defaultdict",
+        "logging.basicConfig"
+      ],
+      "rank": 4,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s26",
+      "style": "paraphrase",
+      "query": "Which list-like sequence is optimized for fast access at both of its endpoints?",
+      "expected": [
+        "collections.deque"
+      ],
+      "top_docs": [
+        "collections.deque",
+        "random.sample",
+        "shutil.copytree",
+        "shutil.rmtree",
+        "textwrap.wrap"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s27",
+      "style": "paraphrase",
+      "query": "How do I represent the difference between two datetime values?",
+      "expected": [
+        "datetime.timedelta"
+      ],
+      "top_docs": [
+        "math.isclose",
+        "datetime.timedelta",
+        "logging.basicConfig",
+        "statistics.median",
+        "shutil.copytree"
+      ],
+      "rank": 2,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s28",
+      "style": "paraphrase",
+      "query": "How do I replace occurrences of a regex pattern in a string with a replacement?",
+      "expected": [
+        "re.sub"
+      ],
+      "top_docs": [
+        "re.sub",
+        "re.findall",
+        "bisect.insort",
+        "glob.glob",
+        "textwrap.wrap"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s29",
+      "style": "keyword",
+      "query": "How do I get a list of all non-overlapping regex matches in a string?",
+      "expected": [
+        "re.findall"
+      ],
+      "top_docs": [
+        "re.findall",
+        "re.sub",
+        "bisect.insort",
+        "textwrap.wrap",
+        "json.dumps"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s30",
+      "style": "keyword",
+      "query": "What mode do I use to open a zip file for appending?",
+      "expected": [
+        "zipfile.ZipFile"
+      ],
+      "top_docs": [
+        "sqlite3.connect",
+        "zipfile.ZipFile",
+        "logging.basicConfig",
+        "tempfile.NamedTemporaryFile",
+        "shutil.which"
+      ],
+      "rank": 2,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s31",
+      "style": "keyword",
+      "query": "Which zip compression method requires zlib?",
+      "expected": [
+        "zipfile.ZipFile"
+      ],
+      "top_docs": [
+        "zipfile.ZipFile",
+        "logging.basicConfig",
+        "json.dumps",
+        "functools.lru_cache",
+        "itertools.chain"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s32",
+      "style": "paraphrase",
+      "query": "How do I pick k unique random elements from a population without repeats?",
+      "expected": [
+        "random.sample"
+      ],
+      "top_docs": [
+        "random.sample",
+        "itertools.chain",
+        "secrets.token_hex",
+        "logging.basicConfig",
+        "bisect.insort"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s33",
+      "style": "paraphrase",
+      "query": "How is the middle value computed when there is an even number of data points?",
+      "expected": [
+        "statistics.median"
+      ],
+      "top_docs": [
+        "statistics.median",
+        "urllib.parse.urlparse",
+        "logging.basicConfig",
+        "shutil.copytree",
+        "shutil.rmtree"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s34",
+      "style": "paraphrase",
+      "query": "How do I break a long paragraph into lines no wider than a given width?",
+      "expected": [
+        "textwrap.wrap"
+      ],
+      "top_docs": [
+        "textwrap.wrap",
+        "bisect.insort",
+        "shutil.which",
+        "functools.partial",
+        "glob.glob"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s35",
+      "style": "paraphrase",
+      "query": "How do I split a URL into its scheme, netloc, path and query parts?",
+      "expected": [
+        "urllib.parse.urlparse"
+      ],
+      "top_docs": [
+        "urllib.parse.urlparse",
+        "shutil.which",
+        "glob.glob",
+        "shutil.rmtree",
+        "bisect.insort"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s36",
+      "style": "paraphrase",
+      "query": "How do I generate url or filesystem safe Base64 strings?",
+      "expected": [
+        "base64.b64encode"
+      ],
+      "top_docs": [
+        "base64.b64encode",
+        "logging.basicConfig",
+        "json.loads",
+        "datetime.timedelta",
+        "subprocess.run"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s37",
+      "style": "paraphrase",
+      "query": "How do I create a temporary file that is deleted automatically when it is closed?",
+      "expected": [
+        "tempfile.NamedTemporaryFile"
+      ],
+      "top_docs": [
+        "tempfile.NamedTemporaryFile",
+        "shutil.rmtree",
+        "glob.glob",
+        "shutil.copytree",
+        "logging.basicConfig"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s38",
+      "style": "keyword",
+      "query": "How do I make the ** pattern match files in subdirectories recursively with glob?",
+      "expected": [
+        "glob.glob"
+      ],
+      "top_docs": [
+        "glob.glob",
+        "shutil.copytree",
+        "pathlib.Path.glob",
+        "logging.basicConfig",
+        "re.sub"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s39",
+      "style": "paraphrase",
+      "query": "In a simple script, how do I send log output to a file instead of stderr?",
+      "expected": [
+        "logging.basicConfig"
+      ],
+      "top_docs": [
+        "logging.basicConfig",
+        "bisect.insort",
+        "sqlite3.connect",
+        "subprocess.run",
+        "glob.glob"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false
+    },
+    {
+      "id": "s40",
+      "style": "keyword",
+      "query": "How do I open a SQLite database connection that lives in RAM instead of on disk?",
+      "expected": [
+        "sqlite3.connect"
+      ],
+      "top_docs": [
+        "sqlite3.connect",
+        "functools.partial",
+        "bisect.insort",
+        "json.dumps",
+        "shutil.copytree"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s41",
+      "style": "paraphrase",
+      "query": "How do I check whether two floating-point numbers are approximately equal?",
+      "expected": [
+        "math.isclose"
+      ],
+      "top_docs": [
+        "math.isclose",
+        "json.loads",
+        "datetime.timedelta",
+        "statistics.median",
+        "collections.defaultdict"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    },
+    {
+      "id": "s42",
+      "style": "paraphrase",
+      "query": "How do I generate a random text string in hexadecimal for a security token?",
+      "expected": [
+        "secrets.token_hex"
+      ],
+      "top_docs": [
+        "secrets.token_hex",
+        "textwrap.wrap",
+        "re.sub",
+        "bisect.insort",
+        "random.sample"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true
+    }
+  ]
+}
