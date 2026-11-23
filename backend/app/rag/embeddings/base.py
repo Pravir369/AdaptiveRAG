@@ -1,6 +1,8 @@
 """Embedding abstraction: embed_texts(list[str]) -> ndarray, embed_query(str) -> ndarray."""
+import hashlib
 import logging
 import os
+import re
 from abc import ABC, abstractmethod
 from typing import List
 
@@ -9,6 +11,8 @@ import numpy as np
 from app.core import EMBEDDING_PROVIDER, EMBED_DIM
 
 logger = logging.getLogger(__name__)
+
+_TOKEN_RE = re.compile(r"\w+")
 
 
 class EmbeddingProvider(ABC):
@@ -27,24 +31,25 @@ class EmbeddingProvider(ABC):
 
 def _hash_embed(text: str, dim: int = EMBED_DIM) -> np.ndarray:
     """Deterministic signed hashing into dim dimensions, L2 normalized."""
-    import hashlib
     vec = np.zeros(dim, dtype=np.float32)
-    # Tokenize loosely: words + small n-grams
-    tokens = text.lower().replace("\n", " ").split()
+    # Same tokenizer as the BM25 index, so "json.dumps," and "json" share tokens.
+    tokens = _TOKEN_RE.findall(text.lower())
     # SHA256 hexdigest has 64 chars (32 bytes). Use first 32 for idx, second 32 for sign.
     for i, t in enumerate(tokens):
         h = hashlib.sha256(t.encode("utf-8")).hexdigest()
         for j in range(0, min(dim, 32)):
-            idx = (int(h[j * 2 : j * 2 + 2], 16) + i + j) % dim
+            # Bucket depends only on the token, never on its position, so the same
+            # word in a query and in a document lands in the same buckets.
+            idx = (int(h[j * 2 : j * 2 + 2], 16) + j * 24) % dim
             sign_idx = (j + 16) % 32  # keep within 0..31 so slice stays in h[0:64]
             sign = 1 if int(h[sign_idx * 2 : sign_idx * 2 + 2], 16) % 2 == 0 else -1
-            vec[idx] += sign * (1.0 / (1 + len(t)))
+            vec[idx] += sign
     # Bigram contributions
     for i in range(len(tokens) - 1):
         bigram = tokens[i] + " " + tokens[i + 1]
         h = hashlib.sha256(bigram.encode("utf-8")).hexdigest()
         for j in range(0, min(16, dim)):
-            idx = (int(h[j * 2 : j * 2 + 2], 16) + i) % dim
+            idx = (int(h[j * 2 : j * 2 + 2], 16) + j * 48) % dim
             sign = 1 if int(h[16:18], 16) % 2 == 0 else -1
             vec[idx] += sign * 0.5
     norm = np.linalg.norm(vec)
