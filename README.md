@@ -140,14 +140,14 @@ The first run scored vector-only at Hit@1 0.07, barely above picking one of 33 d
 
 Indexes built before the fix need a re-ingest (delete `backend/data/` and upload again).
 
-A second bug surfaced the first time the semantic path was actually run: `SBERTEmbeddingProvider.embed_texts` passed a `dtype=` keyword to `SentenceTransformer.encode()`, which sentence-transformers 5.x rejects, so `EMBEDDING_PROVIDER=sbert` raised on the first ingest and fell back to hash embeddings. No test covered it, because the test suite and CI only exercise the default hash provider. Fixed; the sbert path still has no automated test, which is the next gap to close.
+A second bug surfaced the first time the semantic path was actually run: `SBERTEmbeddingProvider.embed_texts` passed a `dtype=` keyword to `SentenceTransformer.encode()`, which sentence-transformers 5.x rejects, so `EMBEDDING_PROVIDER=sbert` raised on the first ingest and fell back to hash embeddings. No test covered it, because the test suite and CI only exercised the default hash provider. Fixed, and [`tests/test_embeddings_sbert.py`](backend/tests/test_embeddings_sbert.py) now covers the provider against a stub that reproduces the sentence-transformers 5.x `encode()` contract, so the regression is caught in CI without installing torch. The same file runs the real model when it happens to be installed.
 
 ## Known limitations and next steps
 
 - Hybrid candidates come from the vector search only; BM25 rescores them but can't add a chunk the vector side missed. On larger corpora the candidate set should be the union of both.
 - The corpus is small and the questions were written for this eval. Next: a public docs set with 100+ questions, and an LLM-judged answer-faithfulness score spot-checked by hand.
 - Thresholds and fusion weights are hand-set defaults, not tuned, and the defaults predate semantic embeddings (see the hybrid-vs-vector note above).
-- Nothing in CI exercises the sentence-transformers or Ollama paths, so regressions in either only show up when someone runs them by hand.
+- CI covers the sentence-transformers provider only against a stub of the library's contract, and does not exercise the real model or the Ollama generator at all, so regressions there still surface only when someone runs them by hand.
 
 ## Tests
 
@@ -157,7 +157,7 @@ pip install -r requirements-dev.txt
 python -m pytest -q
 ```
 
-Covers embeddings (including a regression test for the position bug), chunking, the self-heal loop on a vague query, and the HTTP API end to end (ingest, chat with citations, trace, conversation memory). CI runs tests and the eval on Python 3.11 and 3.12 and builds the frontend.
+Covers hash embeddings (including a regression test for the position bug), the sentence-transformers provider (against a stub of the library's `encode()` contract, plus the real model when it is installed), chunking, the self-heal loop on a vague query, and the HTTP API end to end (ingest, chat with citations, trace, conversation memory). CI runs tests and the eval on Python 3.11 and 3.12 and builds the frontend.
 
 ## API
 
