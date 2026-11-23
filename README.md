@@ -5,7 +5,9 @@
 
 A retrieval-augmented generation (RAG) system that checks its own retrieval before answering, and repairs the query when retrieval looks weak. It runs fully offline: FastAPI + React, SQLite, optional local LLM through Ollama, no API keys.
 
-<!-- Demo GIF goes here: docs/demo.gif (a vague query being repaired, then the Self-Heal Report). -->
+![AdaptiveRAG demo: a paraphrased question answered with citations, a vague question repaired by the self-heal loop, and the offline eval summary](docs/demo.gif)
+
+_Recorded on an Apple M2 with [`vhs`](https://github.com/charmbracelet/vhs); the tape is [`docs/demo.tape`](docs/demo.tape). Everything in it is a live call against a local backend: a paraphrased question answered from the indexed docs, a vague question the self-heal loop repairs, and the offline eval summary._
 
 ## The problem
 
@@ -68,40 +70,66 @@ curl -X POST localhost:8000/api/chat -H 'content-type: application/json' \
      -d '{"query": "How do I delete a directory and everything inside it?"}'
 ```
 
-**With a local LLM:** install [Ollama](https://ollama.com/download), run `ollama pull qwen2.5:3b` (8 GB RAM) or `llama3.1:8b` (16 GB+), and set `GENERATION_PROVIDER=ollama` in `backend/.env`. If Ollama is unreachable, answers fall back to extractive and the UI says so.
+**With a local LLM:** install [Ollama](https://ollama.com/download), run `ollama pull llama3.2:3b` (what the eval and demo above used) or `qwen2.5:3b`, set `GENERATION_PROVIDER=ollama` and `OLLAMA_MODEL` to match in `backend/.env`. If Ollama is unreachable, answers fall back to extractive and the UI says so. Expect 20+ seconds per answer on a CPU-only laptop — see [Answer quality](#answer-quality).
+
+**With semantic embeddings:** `pip install sentence-transformers` and set `EMBEDDING_PROVIDER=sbert` in `backend/.env`. The model (`all-MiniLM-L6-v2`, ~90 MB) downloads on first use; after that it runs offline. This is worth doing — see [Retrieval](#retrieval).
 
 `./start.sh` starts Ollama (if installed), the backend and the frontend together.
 
 ## Results
 
-Measured with the offline eval in [`backend/eval/`](backend/eval/), which anyone can rerun:
+Measured with the offline eval in [`backend/eval/`](backend/eval/), which anyone can rerun.
 
-```bash
-cd backend && pip install -r requirements-dev.txt
-python eval/run_eval.py
-```
+**Setup.** 33 documents (Python standard-library docstrings for functions like `json.dumps`, `shutil.rmtree`, `subprocess.run`; 40 chunks) and 42 hand-written questions: 28 paraphrased so they share few words with the answer, 14 that use the doc's own terms. Hit@k means the right document is among the first k distinct documents retrieved. top_k=12. Latency is retrieval only, in process.
 
-**Setup.** 33 documents (Python standard-library docstrings for functions like `json.dumps`, `shutil.rmtree`, `subprocess.run`; 40 chunks) and 42 hand-written questions: 28 paraphrased so they share few words with the answer, 14 that use the doc's own terms. Hit@k means the right document is among the first k distinct documents retrieved. Default hash embeddings, extractive generator, top_k=12. Latency is retrieval only, in process, measured once on a cloud VM.
+**Hardware.** Every number below was measured on one machine: Apple M2 (8 cores), 16 GB RAM, macOS 27.0.1, Python 3.14.6, CPU only. Semantic embeddings are `sentence-transformers/all-MiniLM-L6-v2`; the local LLM is `llama3.2:3b` through Ollama.
+
+### Retrieval
 
 | Retrieval | Hit@1 | Hit@5 | MRR@10 | Hit@1, paraphrased only | p50 latency |
 |---|---|---|---|---|---|
-| BM25 only | 0.76 | 0.95 | 0.84 | 0.68 | ~1 ms |
-| Vector only (hash embeddings) | 0.52 | 0.88 | 0.66 | 0.50 | ~4 ms |
-| Hybrid, no self-heal | 0.76 | 0.91 | 0.83 | 0.71 | ~4 ms |
-| Hybrid + self-heal (full pipeline) | 0.76 | 0.91 | 0.83 | 0.71 | ~5 ms |
-| Hybrid + self-heal, sentence-transformers | _not run yet_ | | | | |
+| BM25 only | 0.76 | 0.95 | 0.84 | 0.68 | 1.0 ms |
+| Vector only (hash embeddings) | 0.52 | 0.88 | 0.66 | 0.50 | 3.6 ms |
+| Hybrid, no self-heal (hash) | 0.76 | 0.91 | 0.83 | 0.71 | 3.5 ms |
+| Hybrid + self-heal (hash, full pipeline) | 0.76 | 0.91 | 0.83 | 0.71 | 3.8 ms |
+| Vector only (sentence-transformers) | 0.98 | 1.00 | 0.98 | 0.96 | 116 ms |
+| Hybrid, no self-heal (sentence-transformers) | 0.95 | 1.00 | 0.97 | 0.93 | 117 ms |
+| **Hybrid + self-heal, sentence-transformers** | **0.95** | **1.00** | **0.97** | **0.93** | **118 ms** |
 
-_To fill the last row:_ `pip install sentence-transformers && EMBEDDING_PROVIDER=sbert python eval/run_eval.py` _writes `eval/results/stdlib_sbert.md`. Answer quality with Ollama hasn't been measured yet either._
+### Answer quality
 
-Full per-question output: [`backend/eval/results/stdlib_hash.json`](backend/eval/results/stdlib_hash.json). CI reruns the eval on every push and posts the table in the job summary.
+Same retrieval (hybrid + self-heal, sentence-transformers), two generators. "Answer match" is a strict substring check: does the generated answer contain the expected phrase?
+
+| Generator | Answer match | p50 answer latency | p95 answer latency |
+|---|---|---|---|
+| Extractive (no LLM) | 0.64 | 1 ms | 4 ms |
+| Ollama `llama3.2:3b` | 0.62 | 21.6 s | 41.4 s |
+
+Reproduce:
+
+```bash
+cd backend && pip install -r requirements-dev.txt
+python eval/run_eval.py                                              # hash embeddings
+pip install sentence-transformers
+EMBEDDING_PROVIDER=sbert python eval/run_eval.py                     # semantic embeddings
+EMBEDDING_PROVIDER=sbert OLLAMA_MODEL=llama3.2:3b \
+  python eval/run_eval.py --generator ollama                         # + local LLM answers
+```
+
+Results land in `eval/results/stdlib_hash.json`, `stdlib_sbert.json` and `stdlib_sbert_ollama.json`, with a Markdown table beside each.
 
 **What these numbers say, honestly:**
 
-- **Hash embeddings are a lexical fallback, not semantic search.** They need no model download, but vector-only retrieval is clearly worse than BM25, and hybrid only matches BM25. Real semantic embeddings are what should lift the paraphrased column.
-- **Self-heal didn't fire on these questions.** They're specific enough to pass every quality check, so the full pipeline equals plain hybrid here. It did fire on 2 of 3 vague queries ("Explain this", "What are the key points?"). Measuring whether repair improves results needs a labelled set of vague and mismatched questions, which is the next eval to build.
-- **The extractive answer contained the expected fact 52% of the time.** That is a strict substring check on a no-LLM generator that only quotes the first few sentences of the top chunks, so it understates retrieval quality.
+- **Semantic embeddings are the whole story on this corpus.** Swapping hash embeddings for MiniLM moves Hit@1 from 0.76 to 0.95 and the paraphrased column from 0.71 to 0.93. The earlier claim that "real semantic embeddings are what should lift the paraphrased column" was right, and the size of the lift is larger than expected.
+- **Hybrid is now slightly *worse* than vector alone** (0.95 vs 0.98 Hit@1; one question). The fusion weights (`HYBRID_W_VEC=0.7`, `HYBRID_W_LEX=0.3`) were hand-set when the vector side was a lexical hash, so BM25 is being given a say it no longer earns. Weights should be tuned per embedding provider; they are not.
+- **Self-heal still never fires on the scored questions** (0 of 42, unchanged). They are specific enough to pass every quality check, so on this set the full pipeline is exactly plain hybrid. It fires on 2 of 3 vague queries. Whether repair actually *improves* an answer is still unmeasured — that needs a labelled set of vague and mismatched questions, and it is the next eval to build. **Do not read the table above as evidence that self-heal works.**
+- **The answer-match number does not measure LLM quality.** The local LLM scores 0.62 against the extractive generator's 0.64, but a substring check rewards copying the source wording, which is exactly what the extractive generator does and what a good LLM answer avoids. Spot-checking the per-question output, the LLM answers are clearly better prose and correctly grounded; the metric cannot see that. An LLM-judged faithfulness score is the honest next step.
+- **A local LLM costs 20+ seconds per answer on this hardware.** p50 is 21.6 s and p95 is 41.4 s for a 3B model on an M2 CPU, against ~118 ms for retrieval. Retrieval latency itself also rose to 734 ms p50 during the Ollama run, with the model resident on the same machine. Anything interactive needs a smaller context, a smaller model, or a GPU.
+- **Semantic retrieval is ~30x slower than hash** (118 ms vs 3.8 ms p50), all of it CPU-side query embedding. Fine at this corpus size, worth batching or caching later.
 
-### Bug the eval caught
+Full per-question output, including every generated answer: [`stdlib_hash.json`](backend/eval/results/stdlib_hash.json), [`stdlib_sbert.json`](backend/eval/results/stdlib_sbert.json), [`stdlib_sbert_ollama.json`](backend/eval/results/stdlib_sbert_ollama.json). CI reruns the hash eval on every push and posts the table in the job summary.
+
+### Bugs the eval caught
 
 The first run scored vector-only at Hit@1 0.07, barely above picking one of 33 documents at random (0.03). The hash embedding mixed each word's *position* into its bucket, so "json" in a short query and "json" deep in a document landed in different buckets. It also weighted short words like "how" and "do" above longer, more meaningful ones. Fixing both:
 
@@ -112,11 +140,14 @@ The first run scored vector-only at Hit@1 0.07, barely above picking one of 33 d
 
 Indexes built before the fix need a re-ingest (delete `backend/data/` and upload again).
 
+A second bug surfaced the first time the semantic path was actually run: `SBERTEmbeddingProvider.embed_texts` passed a `dtype=` keyword to `SentenceTransformer.encode()`, which sentence-transformers 5.x rejects, so `EMBEDDING_PROVIDER=sbert` raised on the first ingest and fell back to hash embeddings. No test covered it, because the test suite and CI only exercise the default hash provider. Fixed; the sbert path still has no automated test, which is the next gap to close.
+
 ## Known limitations and next steps
 
 - Hybrid candidates come from the vector search only; BM25 rescores them but can't add a chunk the vector side missed. On larger corpora the candidate set should be the union of both.
 - The corpus is small and the questions were written for this eval. Next: a public docs set with 100+ questions, and an LLM-judged answer-faithfulness score spot-checked by hand.
-- Thresholds and fusion weights are hand-set defaults, not tuned.
+- Thresholds and fusion weights are hand-set defaults, not tuned, and the defaults predate semantic embeddings (see the hybrid-vs-vector note above).
+- Nothing in CI exercises the sentence-transformers or Ollama paths, so regressions in either only show up when someone runs them by hand.
 
 ## Tests
 
@@ -150,7 +181,7 @@ Set in `backend/.env` (see `.env.example`):
 ```bash
 EMBEDDING_PROVIDER=hash        # hash (default, offline) or sbert (needs sentence-transformers)
 GENERATION_PROVIDER=extractive # extractive (default) or ollama
-OLLAMA_MODEL=qwen2.5:3b
+OLLAMA_MODEL=qwen2.5:3b        # llama3.2:3b is what the eval and demo above used
 OLLAMA_BASE_URL=http://localhost:11434
 HYBRID_W_VEC=0.7               # fusion weights
 HYBRID_W_LEX=0.3

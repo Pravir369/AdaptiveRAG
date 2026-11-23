@@ -1,7 +1,8 @@
 {
   "embedding_provider": "hash",
   "generator": "extractive",
-  "python": "3.13.18",
+  "generator_model": null,
+  "python": "3.14.6",
   "corpus": {
     "path": "eval/corpus",
     "documents": 33,
@@ -21,23 +22,23 @@
         "hit_at_1": 0.762,
         "hit_at_5": 0.952,
         "mrr_at_10": 0.844,
-        "latency_ms_p50": 0.9,
-        "latency_ms_p95": 1.0
+        "latency_ms_p50": 1.0,
+        "latency_ms_p95": 1.1
       },
       "paraphrase": {
         "n": 28,
         "hit_at_1": 0.679,
         "hit_at_5": 0.929,
         "mrr_at_10": 0.783,
-        "latency_ms_p50": 0.9,
-        "latency_ms_p95": 1.0
+        "latency_ms_p50": 1.0,
+        "latency_ms_p95": 1.1
       },
       "keyword": {
         "n": 14,
         "hit_at_1": 0.929,
         "hit_at_5": 1.0,
         "mrr_at_10": 0.964,
-        "latency_ms_p50": 0.9,
+        "latency_ms_p50": 1.0,
         "latency_ms_p95": 1.0
       }
     },
@@ -47,24 +48,24 @@
         "hit_at_1": 0.524,
         "hit_at_5": 0.881,
         "mrr_at_10": 0.662,
-        "latency_ms_p50": 4.8,
-        "latency_ms_p95": 5.8
+        "latency_ms_p50": 3.6,
+        "latency_ms_p95": 4.5
       },
       "paraphrase": {
         "n": 28,
         "hit_at_1": 0.5,
         "hit_at_5": 0.821,
         "mrr_at_10": 0.619,
-        "latency_ms_p50": 4.8,
-        "latency_ms_p95": 6.2
+        "latency_ms_p50": 3.7,
+        "latency_ms_p95": 4.7
       },
       "keyword": {
         "n": 14,
         "hit_at_1": 0.571,
         "hit_at_5": 1.0,
         "mrr_at_10": 0.746,
-        "latency_ms_p50": 4.6,
-        "latency_ms_p95": 5.5
+        "latency_ms_p50": 3.4,
+        "latency_ms_p95": 4.0
       }
     },
     "hybrid": {
@@ -73,24 +74,24 @@
         "hit_at_1": 0.762,
         "hit_at_5": 0.905,
         "mrr_at_10": 0.831,
-        "latency_ms_p50": 4.4,
-        "latency_ms_p95": 5.4
+        "latency_ms_p50": 3.5,
+        "latency_ms_p95": 4.3
       },
       "paraphrase": {
         "n": 28,
         "hit_at_1": 0.714,
         "hit_at_5": 0.857,
         "mrr_at_10": 0.782,
-        "latency_ms_p50": 4.6,
-        "latency_ms_p95": 5.5
+        "latency_ms_p50": 3.6,
+        "latency_ms_p95": 4.4
       },
       "keyword": {
         "n": 14,
         "hit_at_1": 0.857,
         "hit_at_5": 1.0,
         "mrr_at_10": 0.929,
-        "latency_ms_p50": 4.2,
-        "latency_ms_p95": 4.6
+        "latency_ms_p50": 3.4,
+        "latency_ms_p95": 3.8
       }
     },
     "adaptive": {
@@ -100,7 +101,7 @@
         "hit_at_5": 0.905,
         "mrr_at_10": 0.831,
         "latency_ms_p50": 3.8,
-        "latency_ms_p95": 4.5
+        "latency_ms_p95": 4.7
       },
       "paraphrase": {
         "n": 28,
@@ -108,20 +109,22 @@
         "hit_at_5": 0.857,
         "mrr_at_10": 0.782,
         "latency_ms_p50": 3.9,
-        "latency_ms_p95": 4.6
+        "latency_ms_p95": 4.7
       },
       "keyword": {
         "n": 14,
         "hit_at_1": 0.857,
         "hit_at_5": 1.0,
         "mrr_at_10": 0.929,
-        "latency_ms_p50": 3.8,
-        "latency_ms_p95": 4.2
+        "latency_ms_p50": 3.7,
+        "latency_ms_p95": 4.1
       }
     }
   },
   "adaptive_extras": {
     "answer_match_rate": 0.524,
+    "answer_latency_ms_p50": 1.1,
+    "answer_latency_ms_p95": 3.6,
     "self_heal_triggered_on_scored": 0,
     "self_heal_triggered_on_vague": "2/3"
   },
@@ -144,7 +147,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "json.dumps(obj, *, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, cls=None, indent=None, separators=None, default=None, sort_keys=False, **kw)  Serialize ``obj`` to a JSON formatted ``str``. If ``skipkeys`` is true then ``dict`` keys that are not basic types (``str``, ``int``, ``float``, ``bool``, ``None``) will be skipped instead of raising a ``TypeError``."
     },
     {
       "id": "s02",
@@ -164,7 +168,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "json.loads(s, *, cls=None, object_hook=None, parse_float=None, parse_int=None, parse_constant=None, object_pairs_hook=None, **kw)  Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance containing a JSON document) to a Python object. ``object_hook`` is an optional function that will be called with the result of any object literal decode (a ``dict``). The return value of ``object_hook`` will be used instead of the ``dict``. This feature can be used to implement custom decoders (e.g."
     },
     {
       "id": "s03",
@@ -184,7 +189,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "json.loads(s, *, cls=None, object_hook=None, parse_float=None, parse_int=None, parse_constant=None, object_pairs_hook=None, **kw)  Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance containing a JSON document) to a Python object. ``object_hook`` is an optional function that will be called with the result of any object literal decode (a ``dict``). The return value of ``object_hook`` will be used instead of the ``dict``. This feature can be used to implement custom decoders (e.g."
     },
     {
       "id": "s04",
@@ -204,7 +210,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "json.loads(s, *, cls=None, object_hook=None, parse_float=None, parse_int=None, parse_constant=None, object_pairs_hook=None, **kw)  Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance containing a JSON document) to a Python object. ``object_hook`` is an optional function that will be called with the result of any object literal decode (a ``dict``). The return value of ``object_hook`` will be used instead of the ``dict``. This feature can be used to implement custom decoders (e.g."
     },
     {
       "id": "s05",
@@ -224,7 +231,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "csv.writer(fileobj, /, dialect='excel', **fmtparams)  Return a writer object that will write user data on the given file object. The \"fileobj\" argument can be any object that supports the file API. The optional \"dialect\" argument defines a CSV dialect. The function also accepts optional keyword arguments which override settings provided by the dialect. bisect.insort(a, x, lo=0, hi=None, *, key=None)  Insert item x in list a, and keep it sorted assuming a is sorted."
     },
     {
       "id": "s06",
@@ -244,7 +252,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "re.findall(pattern, string, flags=0)  Return a list of all non-overlapping matches in the string. If one or more capturing groups are present in the pattern, return a list of groups; this will be a list of tuples if the pattern has more than one group. Empty matches are included in the result. glob.glob(pathname, *, root_dir=None, dir_fd=None, recursive=False, include_hidden=False)  Return a list of paths matching a `pathname` pattern."
     },
     {
       "id": "s07",
@@ -264,7 +273,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "functools.partial(func, /, *args, **keywords)  Create a new function with partial application of the given arguments and keywords. glob.glob(pathname, *, root_dir=None, dir_fd=None, recursive=False, include_hidden=False)  Return a list of paths matching a `pathname` pattern. The pattern may contain simple shell-style wildcards a la fnmatch. Unlike fnmatch, filenames starting with a dot are special cases that are not matched by '*' and '?' patterns by default."
     },
     {
       "id": "s08",
@@ -284,7 +294,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "os.makedirs(name, mode=511, exist_ok=False)  makedirs(name [, mode=0o777][, exist_ok=False])  Super-mkdir; create a leaf directory and all intermediate ones. Works like mkdir, except that any intermediate path segment (not just the rightmost) will be created if it does not exist. If the target directory already exists, raise an OSError if exist_ok is False. Otherwise no exception is raised. This is recursive. The optional copy_function argument is a callable that will be used to copy each file."
     },
     {
       "id": "s09",
@@ -304,7 +315,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "pathlib.Path.glob(self, pattern, *, case_sensitive=None, recurse_symlinks=False)  Iterate over this subtree and yield all existing files (of any kind, including directories) matching the given relative pattern. textwrap.wrap(text, width=70, **kwargs)  Wrap a single paragraph of text, returning a list of wrapped lines. Reformat the single paragraph in 'text' so it fits in lines of no more than 'width' columns, and return a list of wrapped lines."
     },
     {
       "id": "s10",
@@ -324,7 +336,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "shutil.copytree(src, dst, symlinks=False, ignore=None, copy_function=<function copy2>, ignore_dangling_symlinks=False, dirs_exist_ok=False)  Recursively copy a directory tree and return the destination directory. If exception(s) occur, an Error is raised with a list of reasons. If the optional symlinks flag is true, symbolic links in the source tree result in symbolic links in the destination tree; if it is false, the contents of the files pointed to by symbolic links are copied."
     },
     {
       "id": "s11",
@@ -344,7 +357,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "glob.glob(pathname, *, root_dir=None, dir_fd=None, recursive=False, include_hidden=False)  Return a list of paths matching a `pathname` pattern. The pattern may contain simple shell-style wildcards a la fnmatch. Unlike fnmatch, filenames starting with a dot are special cases that are not matched by '*' and '?' patterns by default. The order of the returned list is undefined. Sort it if you need a particular order."
     },
     {
       "id": "s12",
@@ -364,7 +378,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "shutil.which(cmd, mode=1, path=None)  Given a command, mode, and a PATH string, return the path which conforms to the given mode on the PATH, or None if there is no such file. `mode` defaults to os.F_OK | os.X_OK. `path` defaults to the result of os.environ.get(\"PATH\"), or can be overridden with a custom search path. shutil.rmtree(path, ignore_errors=False, onerror=None, *, onexc=None, dir_fd=None, _onexc_kwargs=False)  Recursively delete a directory tree."
     },
     {
       "id": "s13",
@@ -384,7 +399,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "subprocess.run(*popenargs, input=None, capture_output=False, timeout=None, check=False, **kwargs)  Run command with arguments and return a CompletedProcess instance. The returned instance will have attributes args, returncode, stdout and stderr. By default, stdout and stderr are not captured, and those attributes will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them, or pass capture_output=True to capture both."
     },
     {
       "id": "s14",
@@ -404,7 +420,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "subprocess.run(*popenargs, input=None, capture_output=False, timeout=None, check=False, **kwargs)  Run command with arguments and return a CompletedProcess instance. The returned instance will have attributes args, returncode, stdout and stderr. By default, stdout and stderr are not captured, and those attributes will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them, or pass capture_output=True to capture both."
     },
     {
       "id": "s15",
@@ -424,7 +441,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "subprocess.run(*popenargs, input=None, capture_output=False, timeout=None, check=False, **kwargs)  Run command with arguments and return a CompletedProcess instance. The returned instance will have attributes args, returncode, stdout and stderr. By default, stdout and stderr are not captured, and those attributes will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them, or pass capture_output=True to capture both."
     },
     {
       "id": "s16",
@@ -444,7 +462,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "heapq.nlargest(n, iterable, key=None)  Find the n largest elements in a dataset. Equivalent to:  sorted(iterable, key=key, reverse=True)[:n] logging.basicConfig(**kwargs)  Do basic configuration for the logging system. This function does nothing if the root logger already has handlers configured, unless the keyword argument *force* is set to ``True``. It is a convenience method intended for use by simple scripts to do one-shot configuration of the logging package."
     },
     {
       "id": "s17",
@@ -464,7 +483,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "bisect.insort(a, x, lo=0, hi=None, *, key=None)  Insert item x in list a, and keep it sorted assuming a is sorted. If x is already in a, insert it to the right of the rightmost x. Optional args lo (default 0) and hi (default len(a)) bound the slice of a to be searched. A custom key function can be supplied to customize the sort order. heapq.nlargest(n, iterable, key=None)  Find the n largest elements in a dataset."
     },
     {
       "id": "s18",
@@ -484,7 +504,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "itertools.groupby(iterable, key=None)  make an iterator that returns consecutive keys and groups from the iterable  Elements to divide into groups according to the key function. key   A function for computing the group category for each element. If the key function is not specified or is None, the element itself   is used for grouping. heapq.nlargest(n, iterable, key=None)  Find the n largest elements in a dataset."
     },
     {
       "id": "s19",
@@ -504,7 +525,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "collections.defaultdict(...)  defaultdict(default_factory=None, /, [...]) --> dict with default factory  The default factory is called without arguments to produce a new value when a key is not present, in __getitem__ only. A defaultdict compares equal to a dict with the same items. All remaining arguments are treated the same as if they were passed to the dict constructor, including keyword arguments."
     },
     {
       "id": "s20",
@@ -524,7 +546,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "functools.lru_cache(maxsize=128, typed=False)  Least-recently-used cache decorator. If *maxsize* is set to None, the LRU features are disabled and the cache can grow without bound. If *typed* is True, arguments of different types will be cached separately. For example, f(decimal.Decimal(\"3.0\")) and f(3.0) will be treated as distinct calls with distinct results. Some types such as str and int may be cached separately even when typed is false. Arguments to the cached function must be hashable."
     },
     {
       "id": "s21",
@@ -544,7 +567,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "functools.lru_cache(maxsize=128, typed=False)  Least-recently-used cache decorator. If *maxsize* is set to None, the LRU features are disabled and the cache can grow without bound. If *typed* is True, arguments of different types will be cached separately. For example, f(decimal.Decimal(\"3.0\")) and f(3.0) will be treated as distinct calls with distinct results. Some types such as str and int may be cached separately even when typed is false. Arguments to the cached function must be hashable."
     },
     {
       "id": "s22",
@@ -564,7 +588,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "functools.partial(func, /, *args, **keywords)  Create a new function with partial application of the given arguments and keywords. logging.basicConfig(**kwargs)  Do basic configuration for the logging system. This function does nothing if the root logger already has handlers configured, unless the keyword argument *force* is set to ``True``. It is a convenience method intended for use by simple scripts to do one-shot configuration of the logging package."
     },
     {
       "id": "s23",
@@ -584,7 +609,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "bisect.insort(a, x, lo=0, hi=None, *, key=None)  Insert item x in list a, and keep it sorted assuming a is sorted. If x is already in a, insert it to the right of the rightmost x. Optional args lo (default 0) and hi (default len(a)) bound the slice of a to be searched. A custom key function can be supplied to customize the sort order. collections.Counter(iterable=None, /, **kwds)  Dict subclass for counting hashable items. Sometimes called a bag or multiset."
     },
     {
       "id": "s24",
@@ -604,7 +630,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "collections.Counter(iterable=None, /, **kwds)  Dict subclass for counting hashable items. Sometimes called a bag or multiset. Elements are stored as dictionary keys and their counts are stored as dictionary values. When constructed from a Mapping or Counter, the original object's values will be used as the initial counts."
     },
     {
       "id": "s25",
@@ -624,7 +651,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "bisect.insort(a, x, lo=0, hi=None, *, key=None)  Insert item x in list a, and keep it sorted assuming a is sorted. If x is already in a, insert it to the right of the rightmost x. Optional args lo (default 0) and hi (default len(a)) bound the slice of a to be searched. A custom key function can be supplied to customize the sort order. collections.Counter(iterable=None, /, **kwds)  Dict subclass for counting hashable items. Sometimes called a bag or multiset."
     },
     {
       "id": "s26",
@@ -644,7 +672,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "collections.deque(...)  A list-like sequence optimized for data accesses near its endpoints. shutil.copytree(src, dst, symlinks=False, ignore=None, copy_function=<function copy2>, ignore_dangling_symlinks=False, dirs_exist_ok=False)  Recursively copy a directory tree and return the destination directory. If exception(s) occur, an Error is raised with a list of reasons."
     },
     {
       "id": "s27",
@@ -664,7 +693,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "math.isclose(a, b, *, rel_tol=1e-09, abs_tol=0.0)  Determine whether two floating-point numbers are close in value. rel_tol     maximum difference for being considered \"close\", relative to the     magnitude of the input values   abs_tol     maximum difference for being considered \"close\", regardless of the     magnitude of the input values  Return True if a is close in value to b, and False otherwise."
     },
     {
       "id": "s28",
@@ -684,7 +714,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "re.sub(pattern, repl, string, count=0, flags=0)  Return the string obtained by replacing the leftmost non-overlapping occurrences of the pattern in string by the replacement repl. repl can be either a string or a callable; if a string, backslash escapes in it are processed. If it is a callable, it's passed the Match object and must return a replacement string to be used. re.findall(pattern, string, flags=0)  Return a list of all non-overlapping matches in the string."
     },
     {
       "id": "s29",
@@ -704,7 +735,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "re.findall(pattern, string, flags=0)  Return a list of all non-overlapping matches in the string. If one or more capturing groups are present in the pattern, return a list of groups; this will be a list of tuples if the pattern has more than one group. Empty matches are included in the result. re.sub(pattern, repl, string, count=0, flags=0)  Return the string obtained by replacing the leftmost non-overlapping occurrences of the pattern in string by the replacement repl."
     },
     {
       "id": "s30",
@@ -724,7 +756,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "sqlite3.connect(...)  Open a connection to the SQLite database file 'database'. You can use \":memory:\" to open a database connection to a database that resides in RAM instead of on disk. Note: Passing more than 1 positional argument to _sqlite3.connect() is deprecated. Parameters 'timeout', 'detect_types', 'isolation_level', 'check_same_thread', 'factory', 'cached_statements' and 'uri' will become keyword-only parameters in Python 3.15."
     },
     {
       "id": "s31",
@@ -744,7 +777,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "zipfile.ZipFile(file, mode='r', compression=0, allowZip64=True, compresslevel=None, *, strict_timestamps=True, metadata_encoding=None)  Class with methods to open, read, write, close, list zip files. z = ZipFile(file, mode=\"r\", compression=ZIP_STORED, allowZip64=True,             compresslevel=None)  file: Either the path to the file, or a file-like object. If it is a path, the file will be opened and closed by ZipFile."
     },
     {
       "id": "s32",
@@ -764,7 +798,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "random.sample(population, k, *, counts=None)  Chooses k unique random elements from a population sequence. Returns a new list containing elements from the population while leaving the original population unchanged. The resulting list is in selection order so that all sub-slices will also be valid random samples. This allows raffle winners (the sample) to be partitioned into grand prize and second place winners (the subslices). Members of the population need not be hashable or unique."
     },
     {
       "id": "s33",
@@ -784,7 +819,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "statistics.median(data)  Return the median (middle value) of numeric data. When the number of data points is odd, return the middle data point. When the number of data points is even, the median is interpolated by taking the average of the two middle values:  >>> median([1, 3, 5]) 3 >>> median([1, 3, 5, 7]) 4.0 urllib.parse.urlparse(url, scheme='', allow_fragments=True)  <scheme>://<netloc>/<path>;<params>?<query>#<fragment>  The result is a named 6-tuple with fields corresponding to the above."
     },
     {
       "id": "s34",
@@ -804,7 +840,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "textwrap.wrap(text, width=70, **kwargs)  Wrap a single paragraph of text, returning a list of wrapped lines. Reformat the single paragraph in 'text' so it fits in lines of no more than 'width' columns, and return a list of wrapped lines. By default, tabs in 'text' are expanded with string.expandtabs(), and all other whitespace characters (including newline) are converted to space. See TextWrapper class for available keyword args to customize wrapping behaviour."
     },
     {
       "id": "s35",
@@ -824,7 +861,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "urllib.parse.urlparse(url, scheme='', allow_fragments=True)  <scheme>://<netloc>/<path>;<params>?<query>#<fragment>  The result is a named 6-tuple with fields corresponding to the above. It is either a ParseResult or ParseResultBytes object, depending on the type of the url parameter. The username, password, hostname, and port sub-components of netloc can also be accessed as attributes of the returned object."
     },
     {
       "id": "s36",
@@ -844,7 +882,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "base64.b64encode(s, altchars=None)  Encode the bytes-like object s using Base64 and return a bytes object. Optional altchars should be a byte string of length 2 which specifies an alternative alphabet for the '+' and '/' characters. This allows an application to e.g. generate url or filesystem safe Base64 strings. Note that you could specify a stream created using open(filename, mode) rather than passing the filename and mode in."
     },
     {
       "id": "s37",
@@ -864,7 +903,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "tempfile.NamedTemporaryFile(mode='w+b', buffering=-1, encoding=None, newline=None, suffix=None, prefix=None, dir=None, delete=True, *, errors=None, delete_on_close=True)  Create and return a temporary file. Arguments: 'prefix', 'suffix', 'dir' -- as for mkstemp. 'mode' -- the mode argument to io.open (default \"w+b\"). 'buffering' -- the buffer size argument to io.open (default -1)."
     },
     {
       "id": "s38",
@@ -884,7 +924,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "glob.glob(pathname, *, root_dir=None, dir_fd=None, recursive=False, include_hidden=False)  Return a list of paths matching a `pathname` pattern. The pattern may contain simple shell-style wildcards a la fnmatch. Unlike fnmatch, filenames starting with a dot are special cases that are not matched by '*' and '?' patterns by default. The order of the returned list is undefined. Sort it if you need a particular order."
     },
     {
       "id": "s39",
@@ -904,7 +945,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": false
+      "answer_match": false,
+      "answer": "logging.basicConfig(**kwargs)  Do basic configuration for the logging system. This function does nothing if the root logger already has handlers configured, unless the keyword argument *force* is set to ``True``. It is a convenience method intended for use by simple scripts to do one-shot configuration of the logging package. The default behaviour is to create a StreamHandler which writes to sys.stderr, set a formatter using the BASIC_FORMAT format string, and add the handler to the root logger."
     },
     {
       "id": "s40",
@@ -924,7 +966,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "sqlite3.connect(...)  Open a connection to the SQLite database file 'database'. You can use \":memory:\" to open a database connection to a database that resides in RAM instead of on disk. Note: Passing more than 1 positional argument to _sqlite3.connect() is deprecated. Parameters 'timeout', 'detect_types', 'isolation_level', 'check_same_thread', 'factory', 'cached_statements' and 'uri' will become keyword-only parameters in Python 3.15."
     },
     {
       "id": "s41",
@@ -944,7 +987,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "math.isclose(a, b, *, rel_tol=1e-09, abs_tol=0.0)  Determine whether two floating-point numbers are close in value. rel_tol     maximum difference for being considered \"close\", relative to the     magnitude of the input values   abs_tol     maximum difference for being considered \"close\", regardless of the     magnitude of the input values  Return True if a is close in value to b, and False otherwise."
     },
     {
       "id": "s42",
@@ -964,7 +1008,8 @@
       "self_heal_triggered": false,
       "attempts": 1,
       "heals": [],
-      "answer_match": true
+      "answer_match": true,
+      "answer": "secrets.token_hex(nbytes=None)  Return a random text string, in hexadecimal. The string has *nbytes* random bytes, each byte converted to two hex digits. If *nbytes* is ``None`` or not supplied, a reasonable default is used. >>> token_hex(16)  #doctest:+SKIP 'f9bf78b9a18ce6d46a0cd2b0b86df9da' textwrap.wrap(text, width=70, **kwargs)  Wrap a single paragraph of text, returning a list of wrapped lines."
     }
   ]
 }

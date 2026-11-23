@@ -72,7 +72,10 @@ class SBERTEmbeddingProvider(EmbeddingProvider):
         try:
             from sentence_transformers import SentenceTransformer
             self._model = SentenceTransformer("all-MiniLM-L6-v2")
-            raw_dim = self._model.get_sentence_embedding_dimension()
+            # get_sentence_embedding_dimension() was renamed in sentence-transformers 5.x.
+            get_dim = getattr(self._model, "get_embedding_dimension", None) or \
+                self._model.get_sentence_embedding_dimension
+            raw_dim = get_dim()
             # Index expects EMBED_DIM (768); pad if needed
             self._dim = max(raw_dim, EMBED_DIM)
             self._raw_dim = raw_dim
@@ -85,7 +88,10 @@ class SBERTEmbeddingProvider(EmbeddingProvider):
         return self._dim
 
     def embed_texts(self, texts: List[str]) -> np.ndarray:
-        out = self._model.encode(texts, convert_to_numpy=True, dtype=np.float32)
+        # No dtype= kwarg: sentence-transformers 5.x rejects unknown encode() kwargs.
+        out = np.asarray(
+            self._model.encode(texts, convert_to_numpy=True), dtype=np.float32
+        )
         if self._raw_dim < EMBED_DIM:
             padded = np.zeros((len(out), EMBED_DIM), dtype=np.float32)
             padded[:, : self._raw_dim] = out

@@ -1,0 +1,1015 @@
+{
+  "embedding_provider": "sbert",
+  "generator": "ollama",
+  "generator_model": "llama3.2:3b",
+  "python": "3.14.6",
+  "corpus": {
+    "path": "eval/corpus",
+    "documents": 33,
+    "chunks": 40
+  },
+  "questions": {
+    "scored": 42,
+    "paraphrase": 28,
+    "keyword": 14,
+    "vague_unscored": 3
+  },
+  "top_k": 12,
+  "configs": {
+    "bm25": {
+      "all": {
+        "n": 42,
+        "hit_at_1": 0.762,
+        "hit_at_5": 0.952,
+        "mrr_at_10": 0.844,
+        "latency_ms_p50": 1.0,
+        "latency_ms_p95": 1.0
+      },
+      "paraphrase": {
+        "n": 28,
+        "hit_at_1": 0.679,
+        "hit_at_5": 0.929,
+        "mrr_at_10": 0.783,
+        "latency_ms_p50": 1.0,
+        "latency_ms_p95": 1.0
+      },
+      "keyword": {
+        "n": 14,
+        "hit_at_1": 0.929,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 0.964,
+        "latency_ms_p50": 1.0,
+        "latency_ms_p95": 1.0
+      }
+    },
+    "vector": {
+      "all": {
+        "n": 42,
+        "hit_at_1": 0.976,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 0.984,
+        "latency_ms_p50": 124.7,
+        "latency_ms_p95": 161.9
+      },
+      "paraphrase": {
+        "n": 28,
+        "hit_at_1": 0.964,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 0.976,
+        "latency_ms_p50": 127.0,
+        "latency_ms_p95": 161.9
+      },
+      "keyword": {
+        "n": 14,
+        "hit_at_1": 1.0,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 1.0,
+        "latency_ms_p50": 121.0,
+        "latency_ms_p95": 127.3
+      }
+    },
+    "hybrid": {
+      "all": {
+        "n": 42,
+        "hit_at_1": 0.952,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 0.972,
+        "latency_ms_p50": 124.3,
+        "latency_ms_p95": 159.7
+      },
+      "paraphrase": {
+        "n": 28,
+        "hit_at_1": 0.929,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 0.958,
+        "latency_ms_p50": 124.5,
+        "latency_ms_p95": 159.7
+      },
+      "keyword": {
+        "n": 14,
+        "hit_at_1": 1.0,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 1.0,
+        "latency_ms_p50": 123.6,
+        "latency_ms_p95": 149.2
+      }
+    },
+    "adaptive": {
+      "all": {
+        "n": 42,
+        "hit_at_1": 0.952,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 0.972,
+        "latency_ms_p50": 734.1,
+        "latency_ms_p95": 852.5
+      },
+      "paraphrase": {
+        "n": 28,
+        "hit_at_1": 0.929,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 0.958,
+        "latency_ms_p50": 726.0,
+        "latency_ms_p95": 837.9
+      },
+      "keyword": {
+        "n": 14,
+        "hit_at_1": 1.0,
+        "hit_at_5": 1.0,
+        "mrr_at_10": 1.0,
+        "latency_ms_p50": 749.0,
+        "latency_ms_p95": 1047.6
+      }
+    }
+  },
+  "adaptive_extras": {
+    "answer_match_rate": 0.619,
+    "answer_latency_ms_p50": 21563.6,
+    "answer_latency_ms_p95": 41397.9,
+    "self_heal_triggered_on_scored": 0,
+    "self_heal_triggered_on_vague": "2/3"
+  },
+  "per_item": [
+    {
+      "id": "s01",
+      "style": "paraphrase",
+      "query": "How do I turn a Python dict into a JSON string with pretty-printed indentation?",
+      "expected": [
+        "json.dumps"
+      ],
+      "top_docs": [
+        "json.dumps",
+        "json.loads",
+        "collections.defaultdict",
+        "textwrap.wrap",
+        "itertools.groupby"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To turn a Python dict into a JSON string with pretty-printed indentation, you can use the `json.dumps` function. You'll want to set the `indent` parameter to a non-negative integer, which will pretty-print the JSON with that indentation level.\n\nHere's an example:\n```python\nimport json\n\nmy_dict = {'name': 'John', 'age': 30, 'city': 'New York'}\njson_string = json.dumps(my_dict, indent=4)\nprint(json_string)\n```\nThis will output:\n```json\n{\n \"name\": \"John\",\n \"age\": 30,\n \"city\": \"New York\"\n}\n```\nNote that the `indent` parameter is optional, and if you don't specify it, the JSON will be represented with no newlines inserted."
+    },
+    {
+      "id": "s02",
+      "style": "keyword",
+      "query": "What does sort_keys do when serializing to JSON?",
+      "expected": [
+        "json.dumps"
+      ],
+      "top_docs": [
+        "json.dumps",
+        "json.loads",
+        "collections.defaultdict",
+        "logging.basicConfig",
+        "secrets.token_hex"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "When serializing to JSON, `sort_keys` is a parameter that, when set to `True`, will sort the keys of dictionaries in the JSON output. This means that instead of having a dictionary with keys in arbitrary order, the keys will be sorted alphabetically.\n\nFor example, if you have a dictionary like this:\n\n```\n{'c': 3, 'a': 1, 'b': 2}\n```\n\nWith `sort_keys` set to `True`, the JSON output would be:\n\n```\n{\"a\": 1, \"b\": 2, \"c\": 3}\n```\n\nThis can be useful for making the JSON output more predictable and easier to read."
+    },
+    {
+      "id": "s03",
+      "style": "paraphrase",
+      "query": "How can I parse JSON numbers with decimals as Decimal instead of float?",
+      "expected": [
+        "json.loads"
+      ],
+      "top_docs": [
+        "json.loads",
+        "json.dumps",
+        "math.isclose",
+        "urllib.parse.urlparse",
+        "statistics.median"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To parse JSON numbers with decimals as Decimal instead of float, you can use the `parse_float` parameter when using `json.loads` and specify a function that returns a Decimal object.\n\nHere's an example:\n\n```python\nfrom decimal import Decimal\n\ndef parse_float(num_str):\n return Decimal(num_str)\n\ndata = '{\"key\": \"value\"}'\nparsed_data = json.loads(data, parse_float=parse_float)\n```\n\nIn this example, the `parse_float` function is called with the string representation of the JSON float, and it returns a Decimal object instead of a float."
+    },
+    {
+      "id": "s04",
+      "style": "keyword",
+      "query": "What is object_pairs_hook used for in json.loads?",
+      "expected": [
+        "json.loads"
+      ],
+      "top_docs": [
+        "json.loads",
+        "json.dumps",
+        "functools.lru_cache",
+        "collections.defaultdict",
+        "shutil.copytree"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "In the `json.loads` function, `object_pairs_hook` is an optional function that will be called with the result of any object literal decoded with an ordered list of pairs. The return value of `object_pairs_hook` will be used instead of the `dict`. This feature can be used to implement custom decoders, such as when you need to handle ordered dictionaries in a specific way.\n\nFor example, you could use `object_pairs_hook` to convert an ordered dictionary to a list of tuples, which might be more convenient for certain applications. However, if `object_hook` is also defined, `object_pairs_hook` takes priority."
+    },
+    {
+      "id": "s05",
+      "style": "keyword",
+      "query": "How do I get a writer object to write rows to a CSV file?",
+      "expected": [
+        "csv.writer"
+      ],
+      "top_docs": [
+        "csv.writer",
+        "tempfile.NamedTemporaryFile",
+        "zipfile.ZipFile",
+        "logging.basicConfig",
+        "json.dumps"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To get a writer object to write rows to a CSV file, you can use the csv.writer function. This function returns a writer object that will write user data on the given file object. You can pass the file object as an argument to csv.writer, along with any additional keyword arguments that override settings provided by the dialect.\n\nFor example:\n```python\nimport csv\n\nwith open('example.csv', 'w', newline='') as file:\n writer = csv.writer(file)\n writer.writerow(['Name', 'Age'])\n writer.writerow(['John', 25])\n```\nThis will create a new CSV file called 'example.csv' and write the rows to it."
+    },
+    {
+      "id": "s06",
+      "style": "paraphrase",
+      "query": "With pathlib, how do I list every file under a folder that matches a wildcard pattern?",
+      "expected": [
+        "pathlib.Path.glob"
+      ],
+      "top_docs": [
+        "pathlib.Path.glob",
+        "glob.glob",
+        "re.findall",
+        "shutil.which",
+        "os.makedirs"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "To list every file under a folder that matches a wildcard pattern using pathlib, you can use the glob function to find the matching files and then iterate over the results.\n\nHere's an example:\n```\nimport pathlib\n\nfolder_path = pathlib.Path('/path/to/folder')\npattern = 'file*.txt' # match files with '.txt' extension\n\nfor file in folder_path.glob(pattern):\n print(file)\n```\nThis will print the paths of all files in the folder that match the pattern.\n\nNote that the glob function returns a list of paths, so you can iterate over the list to process each file individually."
+    },
+    {
+      "id": "s07",
+      "style": "paraphrase",
+      "query": "How do I create a folder along with any missing parent folders?",
+      "expected": [
+        "os.makedirs"
+      ],
+      "top_docs": [
+        "os.makedirs",
+        "pathlib.Path.glob",
+        "shutil.copytree",
+        "glob.glob",
+        "shutil.rmtree"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "You can use the `os.makedirs` function to create a folder along with any missing parent folders. Here's an example of how you can do it:\n\n```python\nimport os\n\ndef create_folder_with_parents(folder_path):\n try:\n os.makedirs(folder_path, exist_ok=True)\n except OSError as e:\n print(f\"Error creating folder: {e}\")\n\n# Example usage:\nfolder_path = \"path/to/your/folder\"\ncreate_folder_with_parents(folder_path)\n```\n\nIn this example, the `os.makedirs` function is used to create the specified folder and all its parent folders if they don't exist. The `exist_ok=True` parameter ensures that no exception is raised if the folder already exists."
+    },
+    {
+      "id": "s08",
+      "style": "keyword",
+      "query": "What does makedirs raise if the directory already exists and exist_ok is False?",
+      "expected": [
+        "os.makedirs"
+      ],
+      "top_docs": [
+        "os.makedirs",
+        "shutil.copytree",
+        "glob.glob",
+        "shutil.rmtree",
+        "pathlib.Path.glob"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "If the directory already exists and `exist_ok` is False, makedirs will raise an OSError. This is specified in the context document , which states that if the target directory already exists, raise an OSError if `exist_ok` is False."
+    },
+    {
+      "id": "s09",
+      "style": "paraphrase",
+      "query": "How can I duplicate an entire folder including all of its subfolders?",
+      "expected": [
+        "shutil.copytree"
+      ],
+      "top_docs": [
+        "pathlib.Path.glob",
+        "os.makedirs",
+        "shutil.copytree",
+        "glob.glob",
+        "random.sample"
+      ],
+      "rank": 3,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "To duplicate an entire folder including all of its subfolders, you can use the `shutil.copytree` function. This function recursively copies a directory tree and returns the destination directory.\n\nHere's an example of how you can use it:\n\n```python\nimport shutil\n\nsrc_dir = '/path/to/source/folder'\ndst_dir = '/path/to/destination/folder'\n\nshutil.copytree(src_dir, dst_dir)\n```\n\nThis will create a copy of the entire folder tree, including all subfolders and files, in the specified destination directory.\n\nNote that this function will overwrite any existing files or directories in the destination directory. If you want to avoid this, you can use the `exist_ok` parameter to set it to `True`."
+    },
+    {
+      "id": "s10",
+      "style": "keyword",
+      "query": "How do I skip some files when calling copytree with an ignore callable?",
+      "expected": [
+        "shutil.copytree"
+      ],
+      "top_docs": [
+        "shutil.copytree",
+        "shutil.rmtree",
+        "glob.glob",
+        "os.makedirs",
+        "pathlib.Path.glob"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "To skip some files when calling `copytree` with an ignore callable, you can pass a callable to the `ignore` argument. This callable will be called with the `src` parameter (the directory being visited) and the `names` parameter (the list of `src` contents) as arguments. The callable should return a list of names relative to the `src` directory that should not be copied.\n\nHere's an example:\n```python\nimport shutil\n\ndef ignore_callable(src, names):\n return ['*.txt'] # ignore all .txt files\n\nshutil.copytree(src_dir, dst_dir, symlinks=False, ignore=ignore_callable)\n```\nThis will recursively copy the `src_dir` to `dst_dir`, ignoring all files with the `.txt` extension."
+    },
+    {
+      "id": "s11",
+      "style": "paraphrase",
+      "query": "How do I delete a directory and everything inside it?",
+      "expected": [
+        "shutil.rmtree"
+      ],
+      "top_docs": [
+        "shutil.rmtree",
+        "tempfile.NamedTemporaryFile",
+        "glob.glob",
+        "os.makedirs",
+        "shutil.copytree"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To delete a directory and everything inside it, you can use the `shutil.rmtree` function. This function will recursively delete the directory tree, including all files and subdirectories.\n\nHere's an example of how you can use it:\n\n```python\nimport shutil\nimport os\n\n# Specify the path to the directory you want to delete\ndirectory_path = '/path/to/directory'\n\n# Use shutil.rmtree to delete the directory and its contents\nshutil.rmtree(directory_path)\n```\n\nNote that if you want to delete a directory and its contents without raising an error if the directory cannot be deleted (e.g., if it's being used by another process), you can pass `ignore_errors=True` to the `shutil.rmtree` function."
+    },
+    {
+      "id": "s12",
+      "style": "paraphrase",
+      "query": "How do I find where an executable command lives on the PATH?",
+      "expected": [
+        "shutil.which"
+      ],
+      "top_docs": [
+        "shutil.which",
+        "shutil.rmtree",
+        "glob.glob",
+        "pathlib.Path.glob",
+        "os.makedirs"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To find where an executable command lives on the PATH, you can use the `shutil.which` function. This function takes a command and a mode as arguments, and returns the path which conforms to the given mode on the PATH, or None if there is no such file.\n\nHere's an example:\n```\nimport shutil\n\ncommand = \"ls\"\npath = shutil.which(command, mode=1, path=None)\nprint(path) # prints the path to the \"ls\" executable\n```\nNote that the `mode` argument defaults to `os.F_OK | os.X_OK`, which means that the function will search for a file that exists and is executable. You can adjust this mode to suit your needs."
+    },
+    {
+      "id": "s13",
+      "style": "paraphrase",
+      "query": "How do I run an external program and capture what it prints?",
+      "expected": [
+        "subprocess.run"
+      ],
+      "top_docs": [
+        "subprocess.run",
+        "tempfile.NamedTemporaryFile",
+        "logging.basicConfig",
+        "csv.writer",
+        "shutil.which"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "To run an external program and capture what it prints, you can use the subprocess.run function. By default, stdout and stderr are not captured, but you can pass stdout=PIPE and/or stderr=PIPE to capture them. \n\nHere's an example:\n\n```python\nimport subprocess\n\nsubprocess.run(['your_program'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)\n```\n\nThis will run your_program and capture its stdout and stderr, which you can then access using the stdout and stderr attributes of the CompletedProcess instance returned by subprocess.run.\n\nIf you want to decode the captured stdout and stderr according to the locale encoding, you can set the encoding parameter when calling subprocess.run. For example:\n\n```python\nimport subprocess\n\nsubprocess.run(['your_program'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')\n```\n\nThis will decode the captured stdout and stderr according to the locale encoding.\n\nNote that if you want to capture the output of the program as a string, you can use the decode method on the stdout attribute of the CompletedProcess instance. For example:\n\n```python\nimport subprocess\n\noutput = subprocess.run(['your_program'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8').stdout.decode('utf-8')\n```\n\nThis will capture the output of your_program and decode it according to the locale encoding."
+    },
+    {
+      "id": "s14",
+      "style": "keyword",
+      "query": "What exception is raised when check is True and the exit code is non-zero?",
+      "expected": [
+        "subprocess.run"
+      ],
+      "top_docs": [
+        "subprocess.run",
+        "shutil.rmtree",
+        "shutil.copytree",
+        "math.isclose",
+        "json.dumps"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "When `check` is True and the exit code is non-zero, a `CalledProcessError` exception is raised. This exception will have the return code in the `returncode` attribute, and output and error attributes if those streams were captured.\n\nIn other words, if the subprocess call fails with a non-zero exit code, the `CalledProcessError` exception will be raised, providing more information about the failure."
+    },
+    {
+      "id": "s15",
+      "style": "paraphrase",
+      "query": "What happens if a child process takes longer than the timeout?",
+      "expected": [
+        "subprocess.run"
+      ],
+      "top_docs": [
+        "subprocess.run",
+        "shutil.rmtree",
+        "shutil.copytree",
+        "sqlite3.connect",
+        "itertools.chain"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "If a child process takes longer than the timeout, a TimeoutExpired exception will be raised. This exception is raised when the timeout (in seconds) is given and the process takes too long to complete."
+    },
+    {
+      "id": "s16",
+      "style": "paraphrase",
+      "query": "How do I get the n biggest items from a dataset?",
+      "expected": [
+        "heapq.nlargest"
+      ],
+      "top_docs": [
+        "heapq.nlargest",
+        "bisect.insort",
+        "collections.Counter",
+        "itertools.groupby",
+        "random.sample"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To get the n biggest items from a dataset, you can use the `heapq.nlargest` function. This function returns the n largest elements from the given iterable, and it's equivalent to sorting the iterable in descending order and then taking the first n elements.\n\nHere's an example of how you can use it:\n\n```python\nimport heapq\n\ndata = [3, 1, 4, 1, 5, 9, 2, 6]\nn = 3\n\nlargest_n = heapq.nlargest(n, data)\nprint(largest_n)\n```\n\nThis will output: `[9, 6, 5]`\n\nThis function is very efficient, especially for large datasets, because it uses a heap data structure internally, which allows it to find the n largest elements in O(n log k) time, where n is the length of the iterable and k is the number of largest elements to find."
+    },
+    {
+      "id": "s17",
+      "style": "paraphrase",
+      "query": "How do I insert an item into an already sorted list so it stays sorted?",
+      "expected": [
+        "bisect.insort"
+      ],
+      "top_docs": [
+        "bisect.insort",
+        "heapq.nlargest",
+        "itertools.groupby",
+        "json.dumps",
+        "itertools.chain"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "To insert an item into an already sorted list so it stays sorted, you can use the bisect.insort function. This function inserts the item into the list while maintaining the sorted order. It does this by finding the correct position for the item based on the existing sorted order of the list.\n\nYou can specify the start and end indices of the slice of the list to be searched using the lo and hi arguments, respectively. If you don't specify these arguments, the function will search the entire list. You can also provide a custom key function to customize the sort order.\n\nHere's an example of how you can use bisect.insort:\n\n```python\nimport bisect\n\nmy_list = [1, 3, 5, 7, 9]\nbisect.insort(my_list, 6)\nprint(my_list) # Output: [1, 3, 5, 6, 7, 9]\n```\n\nIn this example, the item 6 is inserted into the list while maintaining the sorted order."
+    },
+    {
+      "id": "s18",
+      "style": "keyword",
+      "query": "How do I group consecutive elements of an iterable by a key function?",
+      "expected": [
+        "itertools.groupby"
+      ],
+      "top_docs": [
+        "itertools.groupby",
+        "itertools.chain",
+        "collections.Counter",
+        "heapq.nlargest",
+        "re.findall"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To group consecutive elements of an iterable by a key function, you can use the `itertools.groupby` function. This function takes an iterable and a key function as input, and returns an iterator that yields consecutive keys and groups from the iterable.\n\nHere's a simple example:\n\n```python\nimport itertools\n\ndef key_func(x):\n return x % 2\n\nnumbers = [1, 2, 3, 4, 5, 6]\nfor key, group in itertools.groupby(numbers, key_func):\n print(key, list(group))\n```\n\nIn this example, the `key_func` function takes an element from the `numbers` list and returns its remainder when divided by 2. The `itertools.groupby` function then groups the elements by this key, so that consecutive elements with the same key are yielded together.\n\nNote that the `key_func` function should be a function that takes an element and returns a value that can be used to group the elements. The `itertools.groupby` function will use this value to determine which group an element belongs to."
+    },
+    {
+      "id": "s19",
+      "style": "paraphrase",
+      "query": "How do I loop over several lists one after another as if they were a single sequence?",
+      "expected": [
+        "itertools.chain"
+      ],
+      "top_docs": [
+        "collections.deque",
+        "itertools.chain",
+        "itertools.groupby",
+        "random.sample",
+        "bisect.insort"
+      ],
+      "rank": 2,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "You're looking to loop over multiple lists as if they were a single sequence. One way to do this is by using the `itertools.chain` function, which returns a chain object whose `__next__` method returns elements from the first iterable until it is exhausted, then elements from the next iterable, until all of the iterables are exhausted.\n\nHere's an example:\n```\nimport itertools\n\nlist1 = [1, 2, 3]\nlist2 = ['a', 'b', 'c']\nlist3 = [True, False, True]\n\ncombined_list = list(itertools.chain(list1, list2, list3))\n\nfor elem in combined_list:\n print(elem)\n```\nThis will output:\n```\n1\n2\n3\na\nb\nc\nTrue\nFalse\nTrue\n```\nBy using `itertools.chain`, you can loop over multiple lists as if they were a single sequence."
+    },
+    {
+      "id": "s20",
+      "style": "paraphrase",
+      "query": "How can I memoize a function so repeated calls with the same arguments are cached?",
+      "expected": [
+        "functools.lru_cache"
+      ],
+      "top_docs": [
+        "functools.lru_cache",
+        "functools.partial",
+        "random.sample",
+        "collections.defaultdict",
+        "itertools.chain"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "You're looking to memoize a function, which means caching the results of repeated calls with the same arguments. The `functools.lru_cache` decorator is perfect for this purpose. It's a least-recently-used cache decorator that can be used to cache the results of a function.\n\nWhen you use `lru_cache`, the function will store the results of each call in a cache, and the next time the same arguments are passed, the result will be retrieved from the cache instead of being recalculated. This can greatly speed up the execution of your function, especially for functions that have many repeated calls with the same arguments.\n\nYou can use `lru_cache` like this: `@functools.lru_cache(maxsize=None)` (or `maxsize=128` if you want to limit the cache size). This will enable the LRU cache and disable the cache growth limit.\n\nKeep in mind that the arguments to the cached function must be hashable, meaning they must be able to be used as keys in a dictionary."
+    },
+    {
+      "id": "s21",
+      "style": "keyword",
+      "query": "How do I view cache hits and misses for an lru_cache decorated function?",
+      "expected": [
+        "functools.lru_cache"
+      ],
+      "top_docs": [
+        "functools.lru_cache",
+        "json.loads",
+        "secrets.token_hex",
+        "logging.basicConfig",
+        "itertools.chain"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "To view cache hits and misses for an lru_cache decorated function, you can use the `cache_info` method. This method returns a named tuple containing the cache statistics, which include the number of hits, misses, maximum size, and current size.\n\nYou can access these statistics by calling `f.cache_info` on the decorated function `f`. For example:\n\nf.cache_info\n\nThis will return a named tuple with the cache statistics, which you can then access and print out."
+    },
+    {
+      "id": "s22",
+      "style": "paraphrase",
+      "query": "How do I make a new function with some of the arguments already filled in?",
+      "expected": [
+        "functools.partial"
+      ],
+      "top_docs": [
+        "functools.partial",
+        "functools.lru_cache",
+        "collections.defaultdict",
+        "shutil.copytree",
+        "itertools.groupby"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "You're looking to create a new function with some of the arguments already filled in. That's where functools.partial comes in. It allows you to create a new function with some of the arguments already applied.\n\nFor example, if you have a function `add(a, b, c)` and you want to create a new function `add_with_b_5` that calls `add` with `b=5`, you can use `functools.partial` like this:\n\n```python\nimport functools\n\ndef add(a, b, c):\n return a + b + c\n\nadd_with_b_5 = functools.partial(add, b=5)\nprint(add_with_b_5(1, 2, 3)) # Outputs: 10\n```\n\nIn this example, `add_with_b_5` is a new function that calls `add` with `b=5`, so when you call `add_with_b_5(1, 2, 3)`, it's equivalent to calling `add(1, 5, 3)`."
+    },
+    {
+      "id": "s23",
+      "style": "paraphrase",
+      "query": "How do I count how many times each item appears in a list?",
+      "expected": [
+        "collections.Counter"
+      ],
+      "top_docs": [
+        "collections.Counter",
+        "bisect.insort",
+        "random.sample",
+        "re.findall",
+        "itertools.groupby"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To count how many times each item appears in a list, you can use the collections.Counter class. It's a dictionary subclass for counting hashable items. You can create a Counter object from an iterable, and it will store the elements as dictionary keys and their counts as dictionary values.\n\nHere's an example:\n\n```python\nfrom collections import Counter\n\nmy_list = ['apple', 'banana', 'apple', 'orange', 'banana', 'banana']\ncounter = Counter(my_list)\nprint(counter) # Output: Counter({'banana': 3, 'apple': 2, 'orange': 1})\n```\n\nIn this example, the Counter object is created from the list `my_list`. The output shows that 'banana' appears 3 times, 'apple' appears 2 times, and 'orange' appears 1 time.\n\nYou can also update the counts of existing elements or add new elements to the Counter object. For example:\n\n```python\ncounter['apple'] += 1\ncounter['orange'] += 1\ncounter['grape'] = 1\nprint(counter) # Output: Counter({'banana': 3, 'apple': 3, 'orange': 2, 'grape': 1})\n```\n\nIn this example, the count of 'apple' is incremented by 1, the count of 'orange' is incremented by 1, and a new element 'grape' with a count of 1 is added."
+    },
+    {
+      "id": "s24",
+      "style": "keyword",
+      "query": "How do I get the three most common elements from a Counter?",
+      "expected": [
+        "collections.Counter"
+      ],
+      "top_docs": [
+        "collections.Counter",
+        "itertools.groupby",
+        "heapq.nlargest",
+        "random.sample",
+        "re.findall"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To get the three most common elements from a Counter, you can use the `most_common` method. This method returns a list of tuples, where the first element of each tuple is the element and the second element is its count. You can then use slicing to get the top three elements.\n\nFor example:\n```\nc = Counter('abcdeabcdabcaba')\ntop_three = c.most_common(3)\nprint(top_three) # prints [('a', 5), ('b', 4), ('c', 3)]\n```\nThis will give you a list of the three most common elements, along with their counts."
+    },
+    {
+      "id": "s25",
+      "style": "paraphrase",
+      "query": "How do I make a dictionary that creates a default value for a missing key?",
+      "expected": [
+        "collections.defaultdict"
+      ],
+      "top_docs": [
+        "collections.defaultdict",
+        "collections.Counter",
+        "itertools.groupby",
+        "json.dumps",
+        "json.loads"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "You're looking to create a dictionary that has a default value for missing keys. The `defaultdict` class from the `collections` module is perfect for this. It's a subclass of the built-in `dict` class, but it has an additional feature: it allows you to specify a default value to return when a key is not present in the dictionary.\n\nTo create a `defaultdict`, you can use the `default_factory` parameter, which is set to `None` by default. However, you can also specify a custom factory function as the value for this parameter. This factory function will be called whenever a key is not present in the dictionary, and it will return the default value.\n\nFor example, you can create a `defaultdict` with a default value of 0 like this:\n```python\nfrom collections import defaultdict\n\nd = defaultdict(int)\n```\nIn this case, if you try to access a key that is not present in the dictionary, it will return 0 instead of raising a `KeyError`.\n\nYou can also specify a custom factory function as the value for the `default_factory` parameter. For example:\n```python\nfrom collections import defaultdict\n\ndef default_value(key):\n return f\"Key {key}\"\n\nd = defaultdict(default_value)\n```\nIn this case, if you try to access a key that is not present in the dictionary, it will return a string in the format \"Key X\", where X is the key."
+    },
+    {
+      "id": "s26",
+      "style": "paraphrase",
+      "query": "Which list-like sequence is optimized for fast access at both of its endpoints?",
+      "expected": [
+        "collections.deque"
+      ],
+      "top_docs": [
+        "collections.deque",
+        "functools.lru_cache",
+        "bisect.insort",
+        "heapq.nlargest",
+        "itertools.chain"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "The list-like sequence you're looking for is a deque. A deque, or double-ended queue, is a data structure that's optimized for fast access at both its endpoints. This makes it a great choice when you need to frequently add or remove elements from the beginning or end of a list."
+    },
+    {
+      "id": "s27",
+      "style": "paraphrase",
+      "query": "How do I represent the difference between two datetime values?",
+      "expected": [
+        "datetime.timedelta"
+      ],
+      "top_docs": [
+        "datetime.timedelta",
+        "math.isclose",
+        "statistics.median",
+        "logging.basicConfig",
+        "functools.lru_cache"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To represent the difference between two datetime values, you can use the timedelta function. This function takes in various optional arguments that specify the difference in days, seconds, microseconds, milliseconds, minutes, hours, and weeks. You can pass in integers or floats for these values, and they can be positive or negative.\n\nFor example, you can create a timedelta object like this: timedelta(days=5, hours=12, minutes=30). This would represent a 5-day, 12-hour, and 30-minute difference from the original datetime value.\n\nYou can also use the timedelta function with default values, like this: timedelta. This would represent a 0-day, 0-hour, and 0-minute difference."
+    },
+    {
+      "id": "s28",
+      "style": "paraphrase",
+      "query": "How do I replace occurrences of a regex pattern in a string with a replacement?",
+      "expected": [
+        "re.sub"
+      ],
+      "top_docs": [
+        "re.sub",
+        "re.findall",
+        "pathlib.Path.glob",
+        "collections.Counter",
+        "functools.partial"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "To replace occurrences of a regex pattern in a string with a replacement, you can use the `re.sub` function. This function takes in a pattern, a replacement string or a callable, and a string to modify. It returns the modified string with the pattern replaced by the replacement string or the result of the callable.\n\nFor example, if you have a string like \"hello world\" and you want to replace all occurrences of \"world\" with \"earth\", you can use `re.sub(\"world\", \"earth\", \"hello world\")`. The `re.sub` function will return the string \"hello earth\".\n\nIf you want to use a callable as the replacement, you can pass a function that takes in the match object and returns the replacement string. For example, `re.sub(\"world\", lambda m: \"earth\", \"hello world\")` would also return \"hello earth\".\n\nMake sure to check the documentation for the `re.sub` function for more information on the available flags and parameters."
+    },
+    {
+      "id": "s29",
+      "style": "keyword",
+      "query": "How do I get a list of all non-overlapping regex matches in a string?",
+      "expected": [
+        "re.findall"
+      ],
+      "top_docs": [
+        "re.findall",
+        "re.sub",
+        "collections.Counter",
+        "pathlib.Path.glob",
+        "glob.glob"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To get a list of all non-overlapping regex matches in a string, you can use the `re.findall` function. This function takes a pattern, a string, and some flags as arguments, and returns a list of all non-overlapping matches in the string.\n\nHere's an example of how you can use it:\n```\nimport re\n\npattern = 'ab'\nstring = 'ababab'\n\nmatches = re.findall(pattern, string)\nprint(matches) # Output: ['ab', 'ab', 'ab']\n```\nAs you can see, the function returns a list of all non-overlapping matches in the string, including empty matches.\n\nNote that if your pattern has capturing groups, `re.findall` will return a list of tuples, where each tuple contains the groups. For example:\n```\nimport re\n\npattern = '(ab)(cd)'\nstring = 'ababcdabcd'\n\nmatches = re.findall(pattern, string)\nprint(matches) # Output: [('ab', 'cd'), ('ab', 'cd'), ('ab', 'cd')]\n```\nIn this case, the function returns a list of tuples, where each tuple contains the groups."
+    },
+    {
+      "id": "s30",
+      "style": "keyword",
+      "query": "What mode do I use to open a zip file for appending?",
+      "expected": [
+        "zipfile.ZipFile"
+      ],
+      "top_docs": [
+        "zipfile.ZipFile",
+        "tempfile.NamedTemporaryFile",
+        "logging.basicConfig",
+        "shutil.which",
+        "base64.b64encode"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "To open a zip file for appending, you would use the 'a' mode. This mode allows you to add new files to an existing zip archive without overwriting any existing files."
+    },
+    {
+      "id": "s31",
+      "style": "keyword",
+      "query": "Which zip compression method requires zlib?",
+      "expected": [
+        "zipfile.ZipFile"
+      ],
+      "top_docs": [
+        "zipfile.ZipFile",
+        "tempfile.NamedTemporaryFile",
+        "json.dumps",
+        "base64.b64encode",
+        "collections.deque"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "The zip compression method that requires zlib is ZIP_DEFLATED. According to the context documents, ZIP_DEFLATED requires zlib as a dependency."
+    },
+    {
+      "id": "s32",
+      "style": "paraphrase",
+      "query": "How do I pick k unique random elements from a population without repeats?",
+      "expected": [
+        "random.sample"
+      ],
+      "top_docs": [
+        "random.sample",
+        "collections.Counter",
+        "itertools.groupby",
+        "secrets.token_hex",
+        "bisect.insort"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To pick k unique random elements from a population without repeats, you can use the `random.sample` function. This function takes a population sequence, the number of unique elements to choose (k), and optionally a counts parameter.\n\nHere's an example:\n\n```python\nimport random\n\npopulation = ['red', 'blue', 'red', 'blue', 'blue']\nk = 3\nrandom_elements = random.sample(population, k)\nprint(random_elements) # Output: ['red', 'blue', 'blue']\n```\n\nIn this example, `random.sample` chooses 3 unique random elements from the population sequence, without repeats."
+    },
+    {
+      "id": "s33",
+      "style": "paraphrase",
+      "query": "How is the middle value computed when there is an even number of data points?",
+      "expected": [
+        "statistics.median"
+      ],
+      "top_docs": [
+        "statistics.median",
+        "math.isclose",
+        "collections.deque",
+        "collections.Counter",
+        "heapq.nlargest"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "When there's an even number of data points, the median is computed by taking the average of the two middle values. This means that the middle values are averaged together to produce the median.\n\nFor example, if you have a list of numbers like [1, 3, 5, 7], the two middle values are 3 and 5. To find the median, you would take the average of these two numbers, which is (3 + 5) / 2 = 4.0."
+    },
+    {
+      "id": "s34",
+      "style": "paraphrase",
+      "query": "How do I break a long paragraph into lines no wider than a given width?",
+      "expected": [
+        "textwrap.wrap"
+      ],
+      "top_docs": [
+        "textwrap.wrap",
+        "functools.partial",
+        "re.sub",
+        "bisect.insort",
+        "json.loads"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To break a long paragraph into lines no wider than a given width, you can use the `textwrap.wrap` function. This function takes a single paragraph of text and a width as input, and returns a list of wrapped lines.\n\nHere's an example of how you can use it:\n\n```python\nimport textwrap\n\ntext = \"This is a very long paragraph that needs to be wrapped into lines of no more than 70 characters.\"\nwidth = 70\n\nwrapped_lines = textwrap.wrap(text, width=width)\nprint(wrapped_lines)\n```\n\nThis will output a list of wrapped lines, each no wider than 70 characters."
+    },
+    {
+      "id": "s35",
+      "style": "paraphrase",
+      "query": "How do I split a URL into its scheme, netloc, path and query parts?",
+      "expected": [
+        "urllib.parse.urlparse"
+      ],
+      "top_docs": [
+        "urllib.parse.urlparse",
+        "base64.b64encode",
+        "shutil.which",
+        "pathlib.Path.glob",
+        "functools.partial"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "To split a URL into its scheme, netloc, path, and query parts, you can use the `urllib.parse.urlparse` function. This function takes a URL as input and returns a named 6-tuple with fields corresponding to the scheme, netloc, path, params, query, and fragment components of the URL.\n\nHere's an example of how you can use it:\n\n```python\nfrom urllib.parse import urlparse\n\nurl = \"https://example.com/path/to/resource?query=parameter#fragment\"\nparsed_url = urlparse(url)\n\nprint(parsed_url.scheme) # Output: https\nprint(parsed_url.netloc) # Output: example.com\nprint(parsed_url.path) # Output: /path/to/resource\nprint(parsed_url.query) # Output: query=parameter\nprint(parsed_url.fragment) # Output: fragment\n```\n\nNote that the `urlparse` function does not expand `%` escapes in the URL, so if you need to handle those, you may want to use the `urlsplit` function instead."
+    },
+    {
+      "id": "s36",
+      "style": "paraphrase",
+      "query": "How do I generate url or filesystem safe Base64 strings?",
+      "expected": [
+        "base64.b64encode"
+      ],
+      "top_docs": [
+        "base64.b64encode",
+        "secrets.token_hex",
+        "urllib.parse.urlparse",
+        "logging.basicConfig",
+        "tempfile.NamedTemporaryFile"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To generate url or filesystem safe Base64 strings, you can use the `base64.b64encode` function from the Python standard library. This function takes a bytes-like object as input and returns a bytes object.\n\nOne way to get a url or filesystem safe string is to specify an alternative alphabet when encoding. You can do this by passing a byte string of length 2 to the `altchars` parameter. For example:\n\n```python\nimport base64\n\ns = b'some bytes'\nsafe_string = base64.b64encode(s, altchars=b'-_')\n```\n\nThis will encode the bytes using the default Base64 alphabet, but replace the '+' and '/' characters with '-' and '_' respectively, making the resulting string safe for use in URLs and file systems.\n\nAlternatively, you can use the `secrets.token_hex` function to generate a random hexadecimal string, which can then be base64 encoded to get a safe string."
+    },
+    {
+      "id": "s37",
+      "style": "paraphrase",
+      "query": "How do I create a temporary file that is deleted automatically when it is closed?",
+      "expected": [
+        "tempfile.NamedTemporaryFile"
+      ],
+      "top_docs": [
+        "tempfile.NamedTemporaryFile",
+        "shutil.rmtree",
+        "zipfile.ZipFile",
+        "logging.basicConfig",
+        "shutil.which"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "To create a temporary file that is deleted automatically when it is closed, you can use the tempfile.NamedTemporaryFile function. By default, this function will delete the file when it is closed, unless you specify otherwise.\n\nHere's an example of how you can use it:\n\n```python\nimport tempfile\n\nwith tempfile.NamedTemporaryFile as temp_file:\n # Use the temporary file\n temp_file.write(b'Hello, world!')\n```\n\nIn this example, the temporary file will be deleted when the `with` block is exited, regardless of whether an exception is thrown or not."
+    },
+    {
+      "id": "s38",
+      "style": "keyword",
+      "query": "How do I make the ** pattern match files in subdirectories recursively with glob?",
+      "expected": [
+        "glob.glob"
+      ],
+      "top_docs": [
+        "glob.glob",
+        "pathlib.Path.glob",
+        "re.sub",
+        "os.makedirs",
+        "re.findall"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To make the ** pattern match files in subdirectories recursively with glob, you need to set the `recursive` parameter to `True` and also include the `**` pattern in the glob pattern itself.\n\nHere's an example:\n\n```python\nimport glob\n\n# Set recursive to True\nrecursive = True\n\n# Set include_hidden to True\ninclude_hidden = True\n\n# Set the pattern to match files in subdirectories recursively\npattern = '**/*'\n\n# Use glob to find matching files\nmatching_files = glob.glob(pattern, root_dir=None, dir_fd=None, recursive=recursive, include_hidden=include_hidden)\n```\n\nIn this example, the `**/*` pattern will match any files in subdirectories recursively."
+    },
+    {
+      "id": "s39",
+      "style": "paraphrase",
+      "query": "In a simple script, how do I send log output to a file instead of stderr?",
+      "expected": [
+        "logging.basicConfig"
+      ],
+      "top_docs": [
+        "logging.basicConfig",
+        "subprocess.run",
+        "tempfile.NamedTemporaryFile",
+        "csv.writer",
+        "textwrap.wrap"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": false,
+      "answer": "To send log output to a file instead of stderr, you can use the `logging.basicConfig` function with the `filename` and `filemode` arguments.\n\nHere's an example:\n```python\nimport logging\n\nlogging.basicConfig(filename='log.txt', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')\n```\nThis will create a file named `log.txt` and write log messages to it. The `filemode` argument is set to `'a'`, which means the file will be opened in append mode, so new log messages will be added to the end of the file.\n\nYou can customize the log format by using the `format` argument, and you can also set the log level using the `level` argument.\n\nNote that if you want to capture the log output in text mode, you'll need to set the `encoding` argument to a specific encoding, such as `'utf-8'`."
+    },
+    {
+      "id": "s40",
+      "style": "keyword",
+      "query": "How do I open a SQLite database connection that lives in RAM instead of on disk?",
+      "expected": [
+        "sqlite3.connect"
+      ],
+      "top_docs": [
+        "sqlite3.connect",
+        "tempfile.NamedTemporaryFile",
+        "collections.deque",
+        "heapq.nlargest",
+        "zipfile.ZipFile"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To open a SQLite database connection that lives in RAM instead of on disk, you can use the \":memory:\" parameter when connecting to the database. This tells SQLite to create a temporary in-memory database instead of creating a file on disk.\n\nHere's an example of how you can do this:\n\n```python\nimport sqlite3\nconn = sqlite3.connect(\":memory:\")\n```\n\nThis will create a new in-memory SQLite database connection."
+    },
+    {
+      "id": "s41",
+      "style": "paraphrase",
+      "query": "How do I check whether two floating-point numbers are approximately equal?",
+      "expected": [
+        "math.isclose"
+      ],
+      "top_docs": [
+        "math.isclose",
+        "datetime.timedelta",
+        "statistics.median",
+        "collections.Counter",
+        "json.loads"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "You can use the math.isclose function to check whether two floating-point numbers are approximately equal. This function takes two arguments, a and b, and returns True if they are close in value, and False otherwise.\n\nThe function uses two tolerances: rel_tol and abs_tol. rel_tol is the maximum difference for being considered \"close\", relative to the magnitude of the input values, and abs_tol is the maximum difference for being considered \"close\", regardless of the magnitude of the input values.\n\nHere's an example of how you can use it:\n\n```python\nimport math\n\na = 0.1 + 0.2\nb = 0.3\n\nprint(math.isclose(a, b)) # Output: True\n```\n\nIn this example, the difference between a and b is less than the maximum difference allowed by the math.isclose function, so it returns True."
+    },
+    {
+      "id": "s42",
+      "style": "paraphrase",
+      "query": "How do I generate a random text string in hexadecimal for a security token?",
+      "expected": [
+        "secrets.token_hex"
+      ],
+      "top_docs": [
+        "secrets.token_hex",
+        "base64.b64encode",
+        "random.sample",
+        "logging.basicConfig",
+        "json.loads"
+      ],
+      "rank": 1,
+      "self_heal_triggered": false,
+      "attempts": 1,
+      "heals": [],
+      "answer_match": true,
+      "answer": "To generate a random text string in hexadecimal for a security token, you can use the `secrets.token_hex` function. This function returns a random text string, in hexadecimal, with a specified number of bytes. If you don't specify a number of bytes, a reasonable default is used.\n\nFor example, you can use `secrets.token_hex(16)` to generate a 16-byte random text string in hexadecimal. This will give you a secure and random string that can be used as a security token."
+    }
+  ]
+}

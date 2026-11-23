@@ -13,14 +13,16 @@ What it does:
 Metrics (document level, top_k=12 like the API default):
   - Hit@1 / Hit@5: the expected doc is the 1st / in the first 5 distinct docs retrieved
   - MRR@10:        mean of 1/rank of the expected doc among the first 10 distinct docs
-  - Answer match:  (adaptive only) the extractive answer contains the expected phrase.
-                   This is a strict substring check on the deterministic extractive
-                   generator, not an LLM-judged accuracy score.
+  - Answer match:  (adaptive only) the generated answer contains the expected phrase.
+                   This is a strict substring check, not an LLM-judged accuracy score.
+                   With --generator ollama the answer comes from the local LLM, so the
+                   check is looser on wording and the run is much slower.
   - Latency:       wall-clock retrieval time per query, in process, on this machine
 
 Usage (from backend/):
     python eval/run_eval.py                         # hash embeddings (default, offline)
     EMBEDDING_PROVIDER=sbert python eval/run_eval.py   # needs sentence-transformers
+    EMBEDDING_PROVIDER=sbert python eval/run_eval.py --generator ollama   # needs a running Ollama
 """
 import argparse
 import json
@@ -83,20 +85,23 @@ def main() -> int:
     ap.add_argument("--qa", type=Path, default=DEFAULT_QA)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--top-k", type=int, default=12)
+    ap.add_argument("--generator", choices=["extractive", "ollama"],
+                    default=(os.getenv("GENERATION_PROVIDER") or "extractive").lower(),
+                    help="answer generator used for the answer-match check (default: extractive)")
     ap.add_argument("--keep-data", action="store_true", help="keep the temporary index directory")
     args = ap.parse_args()
 
     # Configure the app BEFORE importing it: config is read at import time.
     data_dir = Path(tempfile.mkdtemp(prefix="adaptiverag-eval-"))
     os.environ["ADAPTIVERAG_DATA_DIR"] = str(data_dir)
-    os.environ["GENERATION_PROVIDER"] = "extractive"
+    os.environ["GENERATION_PROVIDER"] = args.generator
     os.environ.setdefault("EMBEDDING_PROVIDER", "hash")
     sys.path.insert(0, str(BACKEND_DIR))
 
     import logging
     logging.basicConfig(level=logging.WARNING)
 
-    from app.core import HYBRID_W_VEC, HYBRID_W_LEX
+    from app.core import HYBRID_W_VEC, HYBRID_W_LEX, OLLAMA_MODEL
     from app.db import init_db, Chunk, Doc
     from app.db.session import SessionLocal
     from app.ingest import ingest_upload
@@ -112,6 +117,22 @@ def main() -> int:
         print("EMBEDDING_PROVIDER=sbert was requested but sentence-transformers could not load; "
               "refusing to report hash results under the sbert label.", file=sys.stderr)
         return 2
+
+    if args.generator == "ollama":
+        import requests
+        from app.core import OLLAMA_BASE_URL
+        try:
+            tags = requests.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=5).json()
+        except Exception as e:
+            print(f"--generator ollama was requested but {OLLAMA_BASE_URL} is unreachable ({e}); "
+                  "refusing to report extractive results under the ollama label.", file=sys.stderr)
+            return 2
+        installed = {m.get("name", "") for m in tags.get("models", [])}
+        if OLLAMA_MODEL not in installed:
+            print(f"--generator ollama was requested but model {OLLAMA_MODEL!r} is not installed "
+                  f"(have: {sorted(installed)}). Run `ollama pull {OLLAMA_MODEL}` or set OLLAMA_MODEL.",
+                  file=sys.stderr)
+            return 2
 
     init_db()
     db = SessionLocal()
@@ -159,7 +180,7 @@ def main() -> int:
         summary[name] = rows, lat
 
     # Full adaptive pipeline (what /api/chat runs), plus extractive answers.
-    rows, lat, answer_hits, healed = [], [], [], 0
+    rows, lat, gen_lat, answer_hits, healed = [], [], [], [], 0
     for it in scored_items:
         t0 = time.perf_counter()
         reranked, selected, chunk_texts, attempts, heals, triggered, _, best_no, mode = retrieve_and_rerank(
@@ -169,9 +190,11 @@ def main() -> int:
         healed += int(bool(triggered))
         ranked = distinct_docs([r["chunk_id"] for r in reranked], chunk_doc)
         s = score_ranking(ranked, set(it["expected_doc_titles"]))
+        t_gen = time.perf_counter()
         answer, _, _ = build_answer_with_citations(
-            it["query"], selected, db, chunk_texts=chunk_texts, mode=mode, provider="extractive"
+            it["query"], selected, db, chunk_texts=chunk_texts, mode=mode, provider=args.generator
         )
+        gen_lat.append((time.perf_counter() - t_gen) * 1000)
         match = _norm(it["expected_answer_contains"]) in _norm(answer)
         answer_hits.append(match)
         rows.append(s)
@@ -180,6 +203,7 @@ def main() -> int:
             "expected": it["expected_doc_titles"], "top_docs": ranked[:5], "rank": s["rank"],
             "self_heal_triggered": bool(triggered), "attempts": len(attempts),
             "heals": [h.get("type") for h in heals], "answer_match": match,
+            "answer": answer,
         })
     summary["adaptive"] = rows, lat
 
@@ -205,7 +229,8 @@ def main() -> int:
     keyword_idx = [i for i, it in enumerate(scored_items) if it.get("style") == "keyword"]
     results = {
         "embedding_provider": provider_name,
-        "generator": "extractive",
+        "generator": args.generator,
+        "generator_model": OLLAMA_MODEL if args.generator == "ollama" else None,
         "python": platform.python_version(),
         "corpus": {"path": str(args.corpus.relative_to(BACKEND_DIR)) if args.corpus.is_relative_to(BACKEND_DIR) else str(args.corpus),
                    "documents": len(files), "chunks": n_chunks},
@@ -216,6 +241,8 @@ def main() -> int:
                     for name, (r, l) in summary.items()},
         "adaptive_extras": {
             "answer_match_rate": round(sum(answer_hits) / max(1, len(answer_hits)), 3),
+            "answer_latency_ms_p50": round(statistics.median(gen_lat), 1) if gen_lat else 0.0,
+            "answer_latency_ms_p95": round(p95(gen_lat), 1) if gen_lat else 0.0,
             "self_heal_triggered_on_scored": healed,
             "self_heal_triggered_on_vague": f"{vague_triggered}/{len(vague_items)}",
         },
@@ -223,7 +250,7 @@ def main() -> int:
     }
 
     args.out.mkdir(parents=True, exist_ok=True)
-    stem = f"stdlib_{provider_name}"
+    stem = f"stdlib_{provider_name}" + ("_ollama" if args.generator == "ollama" else "")
     (args.out / f"{stem}.json").write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
     md = render_markdown(results)
     (args.out / f"{stem}.md").write_text(md, encoding="utf-8")
@@ -240,7 +267,9 @@ def render_markdown(r: dict) -> str:
     lines = [
         f"Corpus: {r['corpus']['documents']} Python stdlib docstrings ({r['corpus']['chunks']} chunks). "
         f"{q['scored']} scored questions ({q['paraphrase']} paraphrased, {q['keyword']} keyword). "
-        f"Embeddings: `{r['embedding_provider']}`. top_k={r['top_k']}. Python {r['python']}.",
+        f"Embeddings: `{r['embedding_provider']}`. Generator: `{r['generator']}`"
+        + (f" ({r['generator_model']})" if r.get("generator_model") else "")
+        + f". top_k={r['top_k']}. Python {r['python']}.",
         "",
         "| Retrieval | Hit@1 | Hit@5 | MRR@10 | Hit@1 (paraphrased) | p50 latency | p95 latency |",
         "|---|---|---|---|---|---|---|",
@@ -254,7 +283,9 @@ def render_markdown(r: dict) -> str:
     x = r["adaptive_extras"]
     lines += [
         "",
-        f"Full pipeline answer match (extractive answer contains the expected phrase): {x['answer_match_rate']:.2f}. "
+        f"Full pipeline answer match ({r['generator']} answer contains the expected phrase): "
+        f"{x['answer_match_rate']:.2f} "
+        f"(answer latency p50 {x['answer_latency_ms_p50']:.0f} ms, p95 {x['answer_latency_ms_p95']:.0f} ms). "
         f"Self-heal triggered on {x['self_heal_triggered_on_scored']} of {q['scored']} scored questions "
         f"and {x['self_heal_triggered_on_vague']} vague ones.",
         "",
