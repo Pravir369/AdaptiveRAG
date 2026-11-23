@@ -27,3 +27,8 @@ backend/bin/
 *.swp
 *.swo
 .DS_Store
+
+# Test / eval scratch
+.pytest_cache/
+backend/eval/eval_results.json
+backend/eval/ci-results/
